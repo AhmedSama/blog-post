@@ -1,0 +1,25 @@
+{%extends 'base.html'%}
+{%block title%}Login{%endblock%}
+{%block content%}
+<div class="container">
+    <h2>Login page</h2>
+    <form class="p-5 border" method="POST" action="{{url_for('login')}}">
+        <div class="mb-3">
+            <label for="username" class="form-label">Username</label>
+            <input type="text" class="form-control" id="username" name="username">
+        </div>
+        <div class="mb-3">
+            <label for="exampleInputPassword1" class="form-label">Password</label>
+            <input type="password" class="form-control" id="exampleInputPassword1" name="pwd">
+        </div>
+        <button type="submit" class="btn btn-primary">Login</button>
+        <h5 class="my-3">
+            <a class="btn btn-outline-primary" href="{{url_for('signup')}}">Sign up</a> here if you don't have an account
+        </h5>
+    </form>
+
+</div>
+
+
+
+{%endblock%}

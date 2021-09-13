@@ -1,0 +1,17 @@
+{%extends 'base.html'%}
+{%block title%}home{%endblock%}
+{%block content%}
+<div class="container">
+    <h1>Welcome to my test website</h1>
+    <h2>Have fun</h2>
+    <div class="container border m-3 p-5">
+        <p><a class="btn btn-primary" href="{{url_for('login')}}">Login</a> here if you have an account</p>
+        <p><a class="btn btn-outline-primary" href="{{url_for('signup')}}">Sign up</a> here if you don't have an account</p>
+    </div>
+</div>
+    
+
+
+{%endblock%}
+
+
