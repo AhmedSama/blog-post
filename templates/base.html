@@ -41,9 +41,13 @@
                     {%endif%}
                 </li>
             </ul>
+
             <form class="d-flex">
                 {%if username%}
                 <a class="btn btn-danger" aria-current="page" href="{{url_for('logout')}}">Logout</a>
+                {%else%}
+                <a class="btn btn-outline-info mx-2" aria-current="page" href="{{url_for('login')}}">Login</a>
+                <a class="btn btn-outline-info mx-2" aria-current="page" href="{{url_for('signup')}}">Sign up</a>
                 {%endif%}
             </form>
         </div>

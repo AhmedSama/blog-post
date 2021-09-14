@@ -7,22 +7,28 @@
         <h3>share your ideas here</h3>
         <form class="p-5 border" method="POST" enctype="multipart/form-data" action="{{url_for('post')}}">
             <div class="mb-3">
-                <label for="title" class="form-label badge bg-dark">Title</label>
+                <label for="title" class="form-label badge bg-dark fs-5 rounded-0">Title</label>
                 <input type="text" class="form-control" id="title" name="title">
             </div>
             <div class="mb-3">
-                <label for="content" class="form-label badge bg-dark">Content</label>
+                <label for="content" class="form-label badge bg-dark fs-5 rounded-0">Content</label>
                 <input type="text" class="form-control" id="content" name="content">
             </div>
             <div class="mb-3">
-                <label for="image" class="form-label badge bg-dark">Image</label>
+                <label for="image" class="form-label badge bg-dark fs-5 rounded-0">Image</label>
                 <input type="file" class="form-control" id="image" name="img">
             </div>
-            <button type="submit" class="btn btn-warning">Share Idea</button>
+            <button type="submit" class="badge fs-4 btn btn-warning">Share Idea</button>
         </form>
     </div>
     {%if posts%}
-    <h2><span class="badge bg-dark">My Ideas</span></h2>
+    <h2><span class="badge bg-dark">My Ideas
+        <svg style="color: #ffc107;" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-lightbulb-fill"
+            viewBox="0 0 16 16">
+            <path
+                d="M2 6a6 6 0 1 1 10.174 4.31c-.203.196-.359.4-.453.619l-.762 1.769A.5.5 0 0 1 10.5 13h-5a.5.5 0 0 1-.46-.302l-.761-1.77a1.964 1.964 0 0 0-.453-.618A5.984 5.984 0 0 1 2 6zm3 8.5a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1l-.224.447a1 1 0 0 1-.894.553H6.618a1 1 0 0 1-.894-.553L5.5 15a.5.5 0 0 1-.5-.5z" />
+        </svg>
+    </span></h2>
     <div class="my-2 ">
         {%for post in posts%}
         <div class="card  w-75">
