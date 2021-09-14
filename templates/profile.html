@@ -2,10 +2,41 @@
 {%block title%}my profile{%endblock%}
 {%block content%}
 <div class="container">
-    <h1>hello {{username}}</h1>
+    <h1>Hello <span style="background-color: rgb(255, 0, 115);" class="badge">{{username}}</span></h1>
     <div class="container border my-4 p-5">
-        <h2>this is your profile page Have fun</h2>
+        <h3>share your ideas here</h3>
+        <form class="p-5 border" method="POST" enctype="multipart/form-data" action="{{url_for('post')}}">
+            <div class="mb-3">
+                <label for="title" class="form-label badge bg-dark">Title</label>
+                <input type="text" class="form-control" id="title" name="title">
+            </div>
+            <div class="mb-3">
+                <label for="content" class="form-label badge bg-dark">Content</label>
+                <input type="text" class="form-control" id="content" name="content">
+            </div>
+            <div class="mb-3">
+                <label for="image" class="form-label badge bg-dark">Image</label>
+                <input type="file" class="form-control" id="image" name="img">
+            </div>
+            <button type="submit" class="btn btn-warning">Share Idea</button>
+        </form>
     </div>
+    {%if posts%}
+    <h2><span class="badge bg-dark">My Ideas</span></h2>
+    <div class="my-2 ">
+        {%for post in posts%}
+        <div class="card  w-75">
+            <div class="card-body">
+                <h5 class="card-title">{{post[2]}}</h5>
+                <p class="card-text">{{post[3]}}</p>
+            </div>
+            <img src="{{url_for('static',filename=post[4])}}" class="card-img-bottom" alt="...">
+        </div>
+        {%endfor%}
+    </div>
+    {%else%}
+    <h2>there is no Ideas yet!</h2>
+    {%endif%}
 </div>
 
 

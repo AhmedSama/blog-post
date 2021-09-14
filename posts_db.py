@@ -6,20 +6,20 @@ ROOT = path.dirname(path.realpath(__file__))
 def make_db():
     conn = sqlite3.connect("data.db")
     cur = conn.cursor()
-    cur.execute("""create table users(
-        username varchar(30) not null,
-        email varchar(30) not null,
-        pwd varchar(60) not null
+    cur.execute("""create table posts(
+        user_id integer not null,
+        title varchar(30) not null,
+        content text not null,
+        image varchar(60) not null
     )""")
     conn.commit()
     conn.close()
 
-
-def add(username,email,pwd):
+def add(user_id, title, content, image):
     conn = sqlite3.connect("data.db")
     cur = conn.cursor()
-    cur.execute("insert into users(username,email,pwd) values(?,?,?)",
-                (username, email, pwd))
+    cur.execute("insert into posts(user_id, title, content, image) values(?,?,?,?)",
+                (user_id, title, content, image))
     conn.commit()
     conn.close()
 
@@ -27,37 +27,29 @@ def add(username,email,pwd):
 def get_all():
     conn = sqlite3.connect("data.db")
     cur = conn.cursor()
-    cur.execute("select rowid,* from users")
+    cur.execute("select rowid,* from posts")
     conn.commit()
     data = cur.fetchall()
     conn.close()
     return data
 
-def get_by(id_):
-    conn = sqlite3.connect("data.db")
-    cur = conn.cursor()
-    cur.execute("select rowid,* from users where rowid=?",(id_,))
-    conn.commit()
-    data = cur.fetchone()
-    conn.close()
-    return data
 
-def select_by(username,pwd):
+def delete(id_):
     conn = sqlite3.connect("data.db")
     cur = conn.cursor()
-    cur.execute(
-        "select rowid,username from users where username=? and pwd=?", (username, pwd))
+    cur.execute("delete from posts where rowid = ?",(id_,))
     conn.commit()
-    data = cur.fetchone()
+    data = cur.fetchall()
     conn.close()
     return data
 
 
-
-
-
-
-
-
-
+def get_by(user_id):
+    conn = sqlite3.connect("data.db")
+    cur = conn.cursor()
+    cur.execute("select rowid,* from posts where user_id=?", (user_id,))
+    conn.commit()
+    data = cur.fetchall()
+    conn.close()
+    return data
 

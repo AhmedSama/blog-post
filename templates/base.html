@@ -13,7 +13,18 @@
 <!-- new nav -->
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
     <div class="container-fluid">
-        <a class="navbar-brand" href="{{url_for('home')}}">Blog Post</a>
+        {%if username%}
+        <a id="the_brand" class="navbar-brand btn btn-outline-warning border-0" href="{{url_for('ideas')}}">{{username}}'s ideas
+                <svg  xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-lightbulb-fill"
+                    viewBox="0 0 16 16">
+                    <path
+                        d="M2 6a6 6 0 1 1 10.174 4.31c-.203.196-.359.4-.453.619l-.762 1.769A.5.5 0 0 1 10.5 13h-5a.5.5 0 0 1-.46-.302l-.761-1.77a1.964 1.964 0 0 0-.453-.618A5.984 5.984 0 0 1 2 6zm3 8.5a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1l-.224.447a1 1 0 0 1-.894.553H6.618a1 1 0 0 1-.894-.553L5.5 15a.5.5 0 0 1-.5-.5z" />
+                </svg>
+        </a>
+        
+        {%else%}
+        <a class="navbar-brand" href="{{url_for('home')}}">Idea</a>
+        {%endif%}
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
             aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
@@ -21,7 +32,13 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                 <li class="nav-item">
+                    <!--navbar when the user login  -->
+                    {%if username%}
+                    <a class="nav-link active" aria-current="page" href="{{url_for('profile')}}">Home</a>
+                    <!-- navbar when the user not login -->
+                    {%else%}
                     <a class="nav-link active" aria-current="page" href="{{url_for('home')}}">Home</a>
+                    {%endif%}
                 </li>
             </ul>
             <form class="d-flex">
