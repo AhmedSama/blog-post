@@ -1,0 +1,27 @@
+{%extends 'base.html'%}
+{%block title%}Add Idea{%endblock%}
+{%block content%}
+<div class="container">
+    <div class="container border my-4 p-5">
+        <h3 class="font-1">share your ideas here</h3>
+        <form class="p-5 border" method="POST" enctype="multipart/form-data" action="{{url_for('post')}}">
+            <div class="mb-3">
+                <label for="title" class="form-label badge bg-dark fs-5 rounded-0 font-1">Title</label>
+                <input type="text" class="form-control" id="title" name="title">
+            </div>
+            <div class="mb-3">
+                <label for="content" class="form-label badge bg-dark fs-5 rounded-0 font-1">Content</label>
+                <input type="text" class="form-control" id="content" name="content">
+            </div>
+            <div class="mb-3">
+                <label for="image" class="form-label badge bg-dark fs-5 rounded-0 font-1">Image</label>
+                <input type="file" class="form-control" id="image" name="img">
+            </div>
+            <button type="submit" class="badge fs-4 btn btn-warning font-1">Share Idea</button>
+        </form>
+    </div>
+</div>
+
+
+
+{%endblock%}

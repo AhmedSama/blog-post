@@ -26,11 +26,21 @@ def signup():
         username = request.form.get("username")
         email = request.form.get("email")
         pwd = request.form.get("pwd")
-        models.add(username,email,pwd)
-        # make him a file for his posts with the name of his id
+        title = request.form.get("title")
+        bio = request.form.get("bio")
+        img = request.files.get("img")
+        models.add(username, email, pwd, title, bio)
         data = models.select_by(username,pwd)
         id_ = data[0]
+        img_url = "images/media/" +str(id_)+"/"+"profile_"+str(id_)+"/"+img.filename
+        # make him a file for his posts with the name of his id
         mkdir(path.join(ROOT,"static","images","media",str(id_)))
+        # make folder inside the user images folder to save the profile image  
+        mkdir(path.join(ROOT, "static", "images",
+                        "media", str(id_), "profile_"+str(id_)))
+        img.save(path.join(ROOT, "static", "images",
+                           "media", str(id_), "profile_"+str(id_), img.filename))
+        models.update(img_url,id_)
         return render_template("login.html")
     return render_template("signup.html")
 
@@ -61,8 +71,9 @@ def login():
 def profile():
     if session.get("user"):
         id_ = session.get("user")[0]
+
         posts = posts_db.get_by(id_)
-        return render_template("profile.html", username=session.get("user")[1].capitalize(), posts=posts)
+        return render_template("profile.html", username=session.get("user")[1].capitalize(), posts=posts, title=session.get("user")[2].capitalize(), bio=session.get("user")[3], img=session.get("user")[4])
     return render_template("login.html")
 
 
@@ -71,12 +82,16 @@ def ideas():
     if session.get("user"):
         id_ = session.get("user")[0]
         posts = posts_db.get_by(id_)
-        return render_template("ideas.html", username=session.get("user")[1].capitalize(), posts=posts)
+        return render_template("ideas.html", username=session.get("user")[1].capitalize(), posts=posts, title=session.get("user")[2].capitalize(), bio=session.get("user")[3], img=session.get("user")[4])
     return render_template("login.html")
 
 
-@app.route("/post",methods=["POST"])
+@app.route("/post",methods=["GET","POST"])
 def post():
+    if request.method =="GET":
+        return render_template("post.html")
+    
+    # here we handle the POST request
     if session.get("user"):
         title = request.form.get("title")
         content = request.form.get("content")

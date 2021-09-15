@@ -47,7 +47,7 @@ def delete(id_):
 def get_by(user_id):
     conn = sqlite3.connect("data.db")
     cur = conn.cursor()
-    cur.execute("select rowid,* from posts where user_id=?", (user_id,))
+    cur.execute("select rowid,* from posts where user_id=? order by rowid desc", (user_id,))
     conn.commit()
     data = cur.fetchall()
     conn.close()

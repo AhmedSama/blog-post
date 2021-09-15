@@ -1,9 +1,9 @@
 {%extends 'base.html'%}
 {%block title%}sign up{%endblock%}
 {%block content%}
-<div class="container">
-    <h2>Sign Up page</h2>
-    <form class="p-5 border" method="POST" action="{{url_for('signup')}}">
+<div class="container ">
+    <h2 class="text-center">Sign Up page</h2>
+    <form class="p-5 border w-75 text-center container" method="POST" action="{{url_for('signup')}}" enctype="multipart/form-data">
         <div class="mb-3">
             <label for="username" class="form-label">Username</label>
             <input type="text" class="form-control" id="username" name="username">
@@ -16,10 +16,19 @@
             <label for="exampleInputPassword1" class="form-label">Password</label>
             <input type="password" class="form-control" id="exampleInputPassword1" name="pwd">
         </div>
+        <div class="mb-3">
+            <label for="title" class="form-label">Job or Title</label>
+            <input type="text" class="form-control" id="title" name="title">
+        </div>
+        <div class="mb-3">
+            <label for="Bio" class="form-label">Bio</label>
+            <textarea type="text" class="form-control" id="Bio" name="bio"></textarea>
+        </div>
+        <div class="mb-3">
+            <label for="img" class="form-label">Profile Image</label>
+            <input type="file" class="form-control" id="img" name="img">
+        </div>
         <button type="submit" class="btn btn-primary">Sign up</button>
-        <h5 class="my-3" >
-            <a class="btn btn-outline-primary" href="{{url_for('login')}}">Login</a> here if you have an account
-        </h5>
     </form>
 </div>
 

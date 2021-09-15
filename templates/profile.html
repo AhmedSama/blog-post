@@ -2,27 +2,31 @@
 {%block title%}my profile{%endblock%}
 {%block content%}
 <div class="container">
-    <h1>Hello <span style="background-color: rgb(255, 0, 115);" class="badge">{{username}}</span></h1>
-    <div class="container border my-4 p-5">
-        <h3>share your ideas here</h3>
-        <form class="p-5 border" method="POST" enctype="multipart/form-data" action="{{url_for('post')}}">
-            <div class="mb-3">
-                <label for="title" class="form-label badge bg-dark fs-5 rounded-0">Title</label>
-                <input type="text" class="form-control" id="title" name="title">
+    <!-- test design profile -->
+   
+    <div class="row p-1">
+        <div class="col-lg-3 col-md-2 ">
+            <div class="card h-100 border-0 ">
+                <img style="clip-path: circle();" src="{{url_for('static',filename=img)}}" class="" alt="...">                    
+                    
             </div>
-            <div class="mb-3">
-                <label for="content" class="form-label badge bg-dark fs-5 rounded-0">Content</label>
-                <input type="text" class="form-control" id="content" name="content">
+        </div>
+        
+        <div class="col-lg-9 col-md-10 ">
+            <div class="card h-100 border-0 ">
+                <div class="card-body">
+                    <h5 style="background-color: rgb(255, 0, 115);" class="font-1 card-title badge fs-2">{{username}}</h5>
+                    <br>
+                    <p class="card-text fs-5 font-1 badge bg-dark">{{title}}</p>
+                    <p class="card-text font-2">{{bio}}</p>
+                </div>
             </div>
-            <div class="mb-3">
-                <label for="image" class="form-label badge bg-dark fs-5 rounded-0">Image</label>
-                <input type="file" class="form-control" id="image" name="img">
-            </div>
-            <button type="submit" class="badge fs-4 btn btn-warning">Share Idea</button>
-        </form>
+        </div>
     </div>
+    <!-- end test -->
+    <br>
     {%if posts%}
-    <h2><span class="badge bg-dark">My Ideas
+    <h2><span class="badge bg-dark font-1">My Ideas
         <svg style="color: #ffc107;" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-lightbulb-fill"
             viewBox="0 0 16 16">
             <path
@@ -33,15 +37,15 @@
         {%for post in posts%}
         <div class="card  w-75">
             <div class="card-body">
-                <h5 class="card-title">{{post[2]}}</h5>
-                <p class="card-text">{{post[3]}}</p>
+                <h5 class="card-title font-1">{{post[2]}}</h5>
+                <p class="card-text font-2">{{post[3]}}</p>
             </div>
             <img src="{{url_for('static',filename=post[4])}}" class="card-img-bottom" alt="...">
         </div>
         {%endfor%}
     </div>
     {%else%}
-    <h2>there is no Ideas yet!</h2>
+    <h2 class="font-1">there is no Ideas yet!</h2>
     {%endif%}
 </div>
 
