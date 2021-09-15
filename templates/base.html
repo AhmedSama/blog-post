@@ -49,10 +49,10 @@
                     <!--navbar when the user login  -->
                     {%if session['user']%}
                     <li class="nav-item">
-                    <a class="nav-link  font-1" aria-current="page"  href="{{url_for('profile')}}">Home</a>
+                    <a class="nav-link  font-1" aria-current="page"  href="{{url_for('profile')}}" id="home2">Home</a>
                     </li>
                     <li class="nav-item">
-                    <a class="nav-link  font-1" aria-current="page" href="{{url_for('post')}}">+Add Idea</a>
+                    <a class="nav-link  font-1" id="add_idea" aria-current="page" href="{{url_for('post')}}">+Add Idea</a>
                     </li>
                     <!-- navbar when the user not login -->
                     {%else%}
