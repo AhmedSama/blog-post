@@ -3,23 +3,24 @@ from os import path
 
 ROOT = path.dirname(path.realpath(__file__))
 
+
 def make_db():
     conn = sqlite3.connect("data.db")
     cur = conn.cursor()
-    cur.execute("""create table posts(
-        user_id integer not null,
-        title varchar(30) not null,
+    cur.execute("""create table comments(
         content text not null,
-        image varchar(60) not null
+        post_id integer not null,
+        user_id integer not null
     )""")
     conn.commit()
     conn.close()
 
-def add(user_id, title, content, image):
+
+def add(content, post_id, user_id):
     conn = sqlite3.connect("data.db")
     cur = conn.cursor()
-    cur.execute("insert into posts(user_id, title, content, image) values(?,?,?,?)",
-                (user_id, title, content, image))
+    cur.execute("insert into comments(content, post_id, user_id) values(?,?,?)",
+                (content, post_id, user_id))
     conn.commit()
     conn.close()
 
@@ -27,7 +28,7 @@ def add(user_id, title, content, image):
 def get_all():
     conn = sqlite3.connect("data.db")
     cur = conn.cursor()
-    cur.execute("select rowid,* from posts")
+    cur.execute("select rowid,* from comments")
     conn.commit()
     data = cur.fetchall()
     conn.close()
@@ -37,27 +38,16 @@ def get_all():
 def delete(id_):
     conn = sqlite3.connect("data.db")
     cur = conn.cursor()
-    cur.execute("delete from posts where rowid = ?",(id_,))
+    cur.execute("delete from comments where rowid = ?", (id_,))
     conn.commit()
     conn.close()
-
-
-def get_by(user_id):
-    conn = sqlite3.connect("data.db")
-    cur = conn.cursor()
-    cur.execute("select rowid,* from posts where user_id=? order by rowid desc", (user_id,))
-    conn.commit()
-    data = cur.fetchall()
-    conn.close()
-    return data
-
 
 def get_by_id(post_id):
     conn = sqlite3.connect("data.db")
     cur = conn.cursor()
     cur.execute(
-        "select rowid,* from posts where rowid=?", (post_id,))
+        "select rowid,* from comments where post_id=? order by rowid desc", (post_id,))
     conn.commit()
-    data = cur.fetchone()
+    data = cur.fetchall()
     conn.close()
     return data

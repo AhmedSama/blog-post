@@ -1,5 +1,5 @@
 from flask import Flask,render_template,request,redirect,url_for,session
-import models,posts_db
+import models,posts_db,comments
 from os import path,mkdir
 
 ROOT = path.dirname(path.abspath(__file__))
@@ -85,6 +85,25 @@ def ideas():
         return render_template("ideas.html", username=session.get("user")[1].capitalize(), posts=posts, title=session.get("user")[2].capitalize(), bio=session.get("user")[3], img=session.get("user")[4])
     return render_template("login.html")
 
+
+@app.route("/idea/<int:post_id>")
+def idea(post_id):
+    if session.get("user"):
+        id_ = session.get("user")[0]
+        post = posts_db.get_by_id(post_id)
+        post_comments = comments.get_by_id(post_id)
+        return render_template("idea.html", username=session.get("user")[1].capitalize(), post=post, title=session.get("user")[2].capitalize(), bio=session.get("user")[3], img=session.get("user")[4], post_comments=post_comments)
+    return render_template("login.html")
+
+
+@app.route("/add_comment/<int:post_id>",methods=["POST"])
+def add_comment(post_id):
+    if session.get("user"):
+        comment = request.form.get("comment")
+        id_ = session.get("user")[0]
+        comments.add(comment,post_id,id_)
+        return redirect(url_for("idea",post_id=post_id))
+    return render_template("login.html")
 
 @app.route("/post",methods=["GET","POST"])
 def post():
