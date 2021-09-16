@@ -2,28 +2,24 @@
 {%block title%}my profile{%endblock%}
 {%block content%}
 <div class="container">
-    <!-- test design profile -->
-   
-    <div class="row p-1">
-        <div class="col-lg-3 col-md-2 ">
-            <div class="card h-100 border-0 ">
-                <img style="clip-path: circle();" src="{{url_for('static',filename=img)}}" class="" alt="...">                    
-                    
-            </div>
-        </div>
-        
-        <div class="col-lg-9 col-md-10 ">
-            <div class="card h-100 border-0 ">
-                <div class="card-body">
-                    <h5 style="background-color: rgb(255, 0, 115);" class="font-1 card-title badge fs-2 rounded-0">{{username}}</h5>
-                    <br>
-                    <p class="card-text fs-6 font-1 badge bg-dark ">{{title}}</p>
-                    <p class="card-text font-2">{{bio}}</p>
+    <!-- new test -->
+        <div class="card mb-3 border-0 mt-2" style="max-width: 540px;">
+            <div class="row g-0">
+                <div class="col-md-4">
+                    <img style="clip-path: circle();" src="{{url_for('static',filename=img)}}" class="img-fluid rounded-start mt-2" alt="...">
+                </div>
+                <div class="col-md-8">
+                    <div class="card-body">
+                        <h5 style="background-color: rgb(255, 0, 115);" class="font-1 card-title badge fs-2">{{username}}</h5>
+                        <br>
+                        <p class="card-text fs-6 font-1 badge bg-dark ">{{title}}</p>
+                        <p class="card-text font-2">{{bio}}</p>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
-    <!-- end test -->
+    <!-- end new test -->
+   <hr>
     <br>
     {%if posts%}
     <h2><span class="badge bg-dark font-1">My Ideas
@@ -41,7 +37,10 @@
                 <p class="card-text font-2">{{post[3]}}</p>
             </div>
             <img src="{{url_for('static',filename=post[4])}}" class="card-img-bottom" alt="...">
+            
         </div>
+        
+        
         {%endfor%}
     </div>
     {%else%}

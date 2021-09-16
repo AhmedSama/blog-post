@@ -4,14 +4,6 @@ from os import path,mkdir
 
 ROOT = path.dirname(path.abspath(__file__))
 
-
-
-
-
-
-
-
-
 app = Flask(__name__)
 app.secret_key = "uysiojxoasidbh"
 @app.route("/")
@@ -86,6 +78,15 @@ def ideas():
     return render_template("login.html")
 
 
+@app.route("/all_ideas")
+def all_ideas():
+    if session.get("user"):
+        id_ = session.get("user")[0]
+        posts =posts_db.get_all()
+        return render_template("all_ideas.html", username=session.get("user")[1].capitalize(), posts=posts, title=session.get("user")[2].capitalize(), bio=session.get("user")[3], img=session.get("user")[4])
+    return render_template("login.html")
+
+
 @app.route("/idea/<int:post_id>")
 def idea(post_id):
     if session.get("user"):
@@ -113,7 +114,15 @@ def add_like(post_id):
         id_ = session.get("user")[0]
         if likes.get_by(post_id,id_) == []:
             likes.add(post_id,id_)
-        
+            likes_number = posts_db.get_likes_number(post_id)
+            likes_number += 1
+            posts_db.update(likes_number,post_id)
+        else:
+            likes.delete(post_id, id_)
+            likes_number = posts_db.get_likes_number(post_id)
+            likes_number -= 1
+            posts_db.update(likes_number, post_id)
+
         return redirect(url_for("idea", post_id=post_id))
     return render_template("login.html")
 
