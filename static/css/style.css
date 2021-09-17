@@ -9,5 +9,7 @@
 .font-3{
     font-family: 'Nunito', sans-serif;
 }
-
+.hoverme:hover{
+   border-bottom: 0.5px solid rgba(0, 0, 0, 0.1);
+}
 

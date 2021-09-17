@@ -10,7 +10,8 @@ def make_db():
         user_id integer not null,
         title varchar(30) not null,
         content text not null,
-        image varchar(60) not null
+        image varchar(60) not null,
+        likes_number INT NOT NULL DEFAULT 0
     )""")
     conn.commit()
     conn.close()
@@ -37,11 +38,14 @@ def alter():
 def get_all():
     conn = sqlite3.connect("data.db")
     cur = conn.cursor()
-    cur.execute("select rowid,* from posts order by likes_number desc")
+    # cur.execute("select rowid,* from posts order by likes_number desc")
+    cur.execute("select users.rowid,users.username,users.img,posts.rowid,posts.title,posts.content,posts.image,posts.likes_number from users join posts on users.rowid = posts.user_id order by likes_number desc")
     conn.commit()
     data = cur.fetchall()
     conn.close()
     return data
+
+
 
 def get_likes_number(post_id):
     conn = sqlite3.connect("data.db")

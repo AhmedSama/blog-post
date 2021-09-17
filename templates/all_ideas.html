@@ -12,21 +12,37 @@
         </span></h2>
     <div class="my-2 ">
         {%for post in posts%}
-        <div class="card  w-75">
-            <div class="card-body">
-                <a class="btn btn-outline-info border-0" href="{{url_for('idea',post_id=post[0])}}">
-                    <h5 class="card-title font-1">{{post[2]}}</h5>
-                </a>
-                <p class="card-text">{{post[3]}}</p>
+        <div class="card  w-75 mt-4">
+            <!-- test -->
+            <a href="" >
+            <div class="container-fluid ">
+                <div class="row hoverme pb-1">
+                    <div class="col-1 m-0 p-0 ">
+                        <img style="clip-path: circle();" src="{{url_for('static',filename=post[2])}}"
+                            class="img-fluid rounded-start mt-1" alt="...">
+                    </div>
+                    <div class="col m-0 p-0 ">
+                        <h5 style="background-color: rgb(255, 0, 115);" class="font-1 card-title badge mt-3 ">{{post[1]}}</h5>
+                    </div>
+                </div>
             </div>
-            <img src="{{url_for('static',filename=post[4])}}" class="card-img-bottom" alt="...">
+            </a>
+            <!-- end test -->
+
+            <div class="card-body">
+                <a class="btn btn-outline-info border-0" href="{{url_for('idea',post_id=post[3])}}">
+                    <h5 class="card-title font-1">{{post[4]}}</h5>
+                </a>
+                <p class="card-text">{{post[5]}}</p>
+            </div>
+            <img src="{{url_for('static',filename=post[6])}}" class="card-img-bottom" alt="...">
             <div class="container text-center m-1">
-                <form action="{{url_for('add_like',post_id=post[0])}}" method="POST">
+                <form action="{{url_for('add_like',post_id=post[3])}}" method="POST">
                     <button type="submit" class="btn p-0 fs-2 position-relative">
                         🔥
-                        <span style="background-color: rgb(255, 0, 115);"
+                        <span style="background-color: rgba(255, 0, 115, 0.734);"
                             class="position-absolute font-1 top-0 start-75 translate-middle badge rounded-pill fs-6">
-                            {{post[5]}}
+                            {{post[7]}}
                         </span>
                     </button>
                 </form>
@@ -35,7 +51,7 @@
         {%endfor%}
     </div>
     {%else%}
-    <h2>there is no Ideas yet!</h2>
+    <h2 class="font-1">there is no Ideas yet!</h2>
     {%endif%}
 </div>
 
