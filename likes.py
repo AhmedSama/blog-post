@@ -33,7 +33,7 @@ def get_all():
     data = cur.fetchall()
     conn.close()
     return data
-print(get_all())
+
 
 def delete(post_id, user_id):
     conn = sqlite3.connect("data.db")

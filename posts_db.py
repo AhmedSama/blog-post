@@ -88,8 +88,9 @@ def get_by_id(post_id):
     conn = sqlite3.connect("data.db")
     cur = conn.cursor()
     cur.execute(
-        "select rowid,* from posts where rowid=?", (post_id,))
+        "select users.rowid,users.username,users.img,posts.rowid,posts.title,posts.content,posts.image,posts.likes_number from users join posts on users.rowid = posts.user_id where posts.rowid=?", (post_id,))
     conn.commit()
     data = cur.fetchone()
     conn.close()
     return data
+

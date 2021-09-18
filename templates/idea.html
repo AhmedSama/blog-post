@@ -4,11 +4,25 @@
 <div class="container">
     <div class="my-2 ">
         <div class="card  w-75 border-bottom-0">
+            <a href="">
+                <div class="container-fluid ">
+                    <div class="row pb-1">
+                        <div class="col-1 m-0 p-0 ">
+                            <img style="clip-path: circle();" src="{{url_for('static',filename=post[2])}}"
+                                class="img-fluid rounded-start mt-2" alt="...">
+                        </div>
+                        <div class="col m-0 p-0 ">
+                            <h5 style="background: linear-gradient(45deg, rgb(255, 0, 106), rgb(0, 170, 255));"
+                                class="font-1 fs-6 card-title badge mt-3 ">{{post[1]}}</h5>
+                        </div>
+                    </div>
+                </div>
+            </a>
             <div class="card-body">
-                <h5 class="card-title font-1">{{post[2]}}</h5>
-                <p class="card-text font-2">{{post[3]}}</p>
+                <h5 class="card-title font-1">{{post[4]}}</h5>
+                <p class="card-text font-2">{{post[5]}}</p>
             </div>
-            <img src="{{url_for('static',filename=post[4])}}" class="card-img-bottom" alt="...">
+            <img src="{{url_for('static',filename=post[6])}}" class="card-img-bottom" alt="...">
             <div class="container text-center m-1">
                 <form action="{{url_for('add_like',post_id=post[0])}}" method="POST">
                     <button type="submit" class="btn p-0 fs-2 position-relative">
@@ -20,21 +34,97 @@
                     </button>
                 </form>                               
             </div>
-            <form action="{{url_for('add_comment',post_id=post[0])}}" method="POST">
                 <div class="mt-3">
                     <textarea class="form-control font-1" id="comment" rows="3" name="comment" placeholder="Add comment here..."></textarea>
                 </div>
-                <button class="btn badge font-1 fs-5 bg-danger rounded-0" type="submit">commint</button>
-            </form>
+                <button class="btn btn-danger font-1 w-25 rounded-0" id="add_comment">commint</button>
+
             {%if post_comments%}
+            <ul id="list_of_comments" class="list-group list-group-flush">
                 {%for comment in post_comments%}
-                <ul class="list-group">
-                    <li class="list-group-item font-2">{{comment[1]}}</li>
-                </ul>
+                    <li class="list-group-item m-0 p-0">
+                        <div class="container">
+                            <div class="row m-0 p-0">
+                                <div class="col-2 m-0 p-0">
+                                    <a href="" style="text-decoration: none;">     
+                                        <img style="clip-path: circle();" src="{{url_for('static',filename=comment[5])}}"
+                                            class="img-fluid rounded-start w-50 m-0 p-0" alt="...">
+                                        <h5 style="background: linear-gradient(45deg, rgb(255, 0, 106), rgb(238, 0, 255));" class="font-1 fs-6 card-title badge mt-3 ">{{comment[4]}}
+                                        </h5>
+                                    </a>
+                                </div>
+                                <div class="col m-0 p-0 pt-5 font-1">
+                                    {{comment[1]}}
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                        
+                        
                 {%endfor%}
+                </ul>
             {%endif%}
         </div>
     </div>
 </div>
+<button id="send_comment">comment api</button>
+<script>
+    function post_comment(data){
+        fetch("{{url_for('add_comment',post_id = post[0])}}",{
+            method:"POST",
+            headers: {
+                'Content-Type':'application/json'
+            },
+            body:JSON.stringify(data) 
+        })
+        .then(res => res.json())
+        .then(final_res => {
+            let li = document.createElement('li');
+            li.classList.add("list-group-item", "m-0", "p-0");
+            let div1 = document.createElement('div');
+            div1.classList.add("container");
+            let div2 = document.createElement('div');
+            div2.classList.add("row", "m-0", "p-0");
+            let div3 = document.createElement('div');
+            div3.classList.add("col-2", "m-0", "p-0");
+            let a = document.createElement('a');
+            a.style= "text-decoration: none;"
+            let img = document.createElement('img');
+            img.style = "clip-path: circle()";
+            img.classList.add("img-fluid", "rounded-start", "m-0", "p-0","w-50");
 
+            let h5 = document.createElement('h5');
+            h5.style.background = "linear-gradient(45deg, rgb(255, 0, 106), rgb(238, 0, 255))";
+            h5.classList.add("font-1" , "fs-6" , "card-title" , "badge" , "mt-3");
+                                
+            let div4 = document.createElement('div');
+            div4.classList.add("col","pt-5", "font-1", "m-0", "p-0");
+
+            li.appendChild(div1)
+            div1.appendChild(div2);
+            div1.appendChild(div2)
+            div2.appendChild(div3);
+            div2.appendChild(div4);
+            div3.appendChild(a);
+            a.appendChild(img);
+            a.appendChild(h5);
+
+            img.src = "http://127.0.0.1:5000/static/" + final_res.img;
+            h5.innerText = final_res.name;
+            div4.innerText = final_res.comment
+            console.log(final_res);
+            list_of_comments.insertBefore(li, list_of_comments.firstChild);
+        })
+    };
+    
+    
+    let add_comment = document.getElementById("add_comment");
+    add_comment.onclick = function(){
+        // adding comment value here so it takes the last thing u wrote in textarea
+        // if we didnt put it right here it could be empty string 
+        let comment = document.getElementById("comment").value;
+        post_comment({the_comment:comment});
+        document.getElementById("comment").value = "";
+    }
+</script>
 {%endblock%}

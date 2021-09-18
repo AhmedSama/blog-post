@@ -46,7 +46,7 @@ def get_by_id(post_id):
     conn = sqlite3.connect("data.db")
     cur = conn.cursor()
     cur.execute(
-        "select rowid,* from comments where post_id=? order by rowid desc", (post_id,))
+        "select comments.rowid,comments.*,users.username,users.img from comments join users on users.rowid = comments.user_id where comments.post_id=? order by comments.rowid desc", (post_id,))
     conn.commit()
     data = cur.fetchall()
     conn.close()

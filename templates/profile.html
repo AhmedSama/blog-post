@@ -10,7 +10,7 @@
                 </div>
                 <div class="col-md-8">
                     <div class="card-body">
-                        <h5 style="background-color: rgb(255, 0, 115);" class="font-1 card-title badge fs-2">{{username}}</h5>
+                        <h5 style="background: linear-gradient(45deg, rgb(255, 0, 106), rgb(0, 170, 255));" class="font-1 card-title badge fs-2">{{username}}</h5>
                         <br>
                         <p class="card-text fs-6 font-1 badge bg-dark ">{{title}}</p>
                         <p class="card-text font-2">{{bio}}</p>
@@ -31,7 +31,7 @@
     </span></h2>
     <div class="my-2 ">
         {%for post in posts%}
-        <div class="card  w-75">
+        <div class="card w-sm-100  w-75">
             <div class="card-body">
                 <a class="btn btn-outline-info border-0" href="{{url_for('idea',post_id=post[0])}}"><h5 class="card-title font-1">{{post[2]}}</h5></a>
                 <p class="card-text font-2">{{post[3]}}</p>

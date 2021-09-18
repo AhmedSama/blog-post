@@ -1,4 +1,4 @@
-from flask import Flask,render_template,request,redirect,url_for,session
+from flask import Flask,render_template,request,redirect,url_for,session,jsonify
 import models,posts_db,comments,likes
 from os import path,mkdir
 
@@ -101,11 +101,33 @@ def idea(post_id):
 @app.route("/add_comment/<int:post_id>",methods=["POST"])
 def add_comment(post_id):
     if session.get("user"):
-        comment = request.form.get("comment")
+        comment = request.get_json()
+        comment = comment.get("the_comment")
+        
+        # TODO handling empty comments later
+        if comment == "":
+            return jsonify({"error":"no comment"})
+
         id_ = session.get("user")[0]
+        user_data = models.get_by(id_)
+        name = user_data[1]
+        img = user_data[6]
+        print(name,img)
         comments.add(comment,post_id,id_)
-        return redirect(url_for("idea",post_id=post_id))
+        return jsonify({"comment":comment,"name":name ,"img":img })
     return render_template("login.html")
+
+# test api
+@app.route("/test_api/<int:post_id>", methods=["POST"])
+def test_api(post_id):
+    if session.get("user"):
+        data = request.get_json()
+        print(data.get("the_comment"))
+        the_comment = data.get("the_comment")
+        send_data = {"comment": the_comment}
+        return jsonify(send_data)
+    return render_template("login.html")
+
 
 # liking feature
 @app.route("/add_like/<int:post_id>", methods=["POST"])
