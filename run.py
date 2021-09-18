@@ -139,13 +139,13 @@ def add_like(post_id):
             likes_number = posts_db.get_likes_number(post_id)
             likes_number += 1
             posts_db.update(likes_number,post_id)
+            return jsonify({"like":likes_number})
         else:
             likes.delete(post_id, id_)
             likes_number = posts_db.get_likes_number(post_id)
             likes_number -= 1
             posts_db.update(likes_number, post_id)
-
-        return redirect(url_for("idea", post_id=post_id))
+            return jsonify({"like": likes_number})
     return render_template("login.html")
 
 

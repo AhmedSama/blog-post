@@ -24,20 +24,21 @@
             </div>
             <img src="{{url_for('static',filename=post[6])}}" class="card-img-bottom" alt="...">
             <div class="container text-center m-1">
-                <form action="{{url_for('add_like',post_id=post[0])}}" method="POST">
-                    <button type="submit" class="btn p-0 fs-2 position-relative">
-                        🔥
-                        <span style="background-color: rgb(255, 0, 115);"
-                            class="position-absolute font-1 top-0 start-75 translate-middle badge rounded-pill fs-6">
-                            {{likes_number}}
-                        </span>
-                    </button>
-                </form>                               
+                <button id="like_btn" class="btn p-0 fs-2 position-relative">
+                    🔥
+                    <span id="likes_number" style="background-color: rgb(255, 0, 115);"
+                        class="position-absolute font-1 top-0 start-75 translate-middle badge rounded-pill fs-6">
+                        {{likes_number}}
+                    </span>
+                </button>                           
             </div>
                 <div class="mt-3">
                     <textarea class="form-control font-1" id="comment" rows="3" name="comment" placeholder="Add comment here..."></textarea>
                 </div>
-                <button class="btn btn-danger font-1 w-25 rounded-0" id="add_comment">commint</button>
+                <div class="container-fluid p-0">
+                     <button class="btn btn-primary rounded-0" id="add_comment">commint</button>
+                </div>
+               
 
             {%if post_comments%}
             <ul id="list_of_comments" class="list-group list-group-flush">
@@ -67,7 +68,7 @@
         </div>
     </div>
 </div>
-<button id="send_comment">comment api</button>
+
 <script>
     function post_comment(data){
         fetch("{{url_for('add_comment',post_id = post[0])}}",{
@@ -112,7 +113,6 @@
             img.src = "http://127.0.0.1:5000/static/" + final_res.img;
             h5.innerText = final_res.name;
             div4.innerText = final_res.comment
-            console.log(final_res);
             list_of_comments.insertBefore(li, list_of_comments.firstChild);
         })
     };
@@ -123,8 +123,28 @@
         // adding comment value here so it takes the last thing u wrote in textarea
         // if we didnt put it right here it could be empty string 
         let comment = document.getElementById("comment").value;
+        if(comment == ""){
+            return;
+        }
         post_comment({the_comment:comment});
         document.getElementById("comment").value = "";
     }
+
+
+    let like_btn = document.getElementById("like_btn");
+    let likes_number = document.getElementById("likes_number");
+  
+    like_btn.addEventListener("click",()=>{
+        fetch("{{url_for('add_like',post_id= post[0])}}",{
+            method:"POST",
+        })
+        .then(res=>res.json())
+        .then(data=>{
+            document.getElementById("likes_number").innerText = data.like;
+        })
+
+    })
+
+
 </script>
 {%endblock%}

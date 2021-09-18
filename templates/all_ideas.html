@@ -37,15 +37,14 @@
             </div>
             <img src="{{url_for('static',filename=post[6])}}" class="card-img-bottom" alt="...">
             <div class="container text-center m-1">
-                <form action="{{url_for('add_like',post_id=post[3])}}" method="POST">
-                    <button type="submit" class="btn p-0 fs-2 position-relative">
+
+                    <button  id="{{post[3]}}"  class="btn p-0 fs-2 position-relative like-btn">
                         🔥
-                        <span style="background-color: rgba(255, 0, 115, 0.734);"
+                        <span id="likes-number-{{post[3]}}" style="background-color: rgba(255, 0, 115, 0.734);"
                             class="position-absolute font-1 top-0 start-75 translate-middle badge rounded-pill fs-6">
                             {{post[7]}}
                         </span>
                     </button>
-                </form>
             </div>
         </div>
         {%endfor%}
@@ -58,6 +57,23 @@
 <script>
     let all_ideas = document.getElementById("all_ideas");
     all_ideas.classList.add("active");
+        let l = document.getElementsByClassName("like-btn");
+       for(let i = 0; i < l.length ; i++){
+           l[i].addEventListener("click",e=>{
+               let likes_number = document.getElementById("likes-number-" + l[i].id);
+               fetch("http://127.0.0.1:5000/add_like/" + l[i].id, {
+                   method: "POST",
+               })
+                   .then(res => res.json())
+                   .then(data => {
+                       document.getElementById("likes-number-" + l[i].id).innerText = data.like;
+                   })
+           })
+       }
+        function do_like(post_id){
+            
+        }
+
 </script>
 
 {%endblock%}
