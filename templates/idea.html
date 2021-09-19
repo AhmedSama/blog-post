@@ -26,7 +26,12 @@
             <div class="container text-center m-1">
                 <button id="like_btn" class="btn p-0 fs-2 position-relative">
                     🔥
-                    <span id="likes_number" style="background-color: rgb(255, 0, 115);"
+                    <span id="likes_number"
+                    {%if liked%}
+                        style="background-color: rgb(255, 0, 115);"
+                    {%else%}
+                        style="background-color: black;"
+                    {%endif%}
                         class="position-absolute font-1 top-0 start-75 translate-middle badge rounded-pill fs-6">
                         {{likes_number}}
                     </span>
@@ -36,7 +41,7 @@
                     <textarea class="form-control font-1" id="comment" rows="3" name="comment" placeholder="Add comment here..."></textarea>
                 </div>
                 <div class="container-fluid p-0">
-                     <button class="btn btn-primary rounded-0" id="add_comment">commint</button>
+                     <button style="background: linear-gradient(45deg, rgb(0, 255, 238), rgb(51, 0, 255));" class="btn rounded-0 text-light border-0" id="add_comment">commint</button>
                 </div>
                
 
@@ -140,6 +145,12 @@
         })
         .then(res=>res.json())
         .then(data=>{
+            if(data.done){
+                likes_number.style.background = "rgb(255, 0, 115)";
+            }
+            else{
+                likes_number.style.background = "black";
+            }
             document.getElementById("likes_number").innerText = data.like;
         })
 

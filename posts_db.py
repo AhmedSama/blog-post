@@ -39,7 +39,7 @@ def get_all():
     conn = sqlite3.connect("data.db")
     cur = conn.cursor()
     # cur.execute("select rowid,* from posts order by likes_number desc")
-    cur.execute("select users.rowid,users.username,users.img,posts.rowid,posts.title,posts.content,posts.image,posts.likes_number from users join posts on users.rowid = posts.user_id order by likes_number desc")
+    cur.execute("select users.rowid,users.username,users.img,posts.rowid,posts.title,posts.content,posts.image,posts.likes_number,posts.user_id from users join posts on users.rowid = posts.user_id order by likes_number desc")
     conn.commit()
     data = cur.fetchall()
     conn.close()

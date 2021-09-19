@@ -94,7 +94,11 @@ def idea(post_id):
         post = posts_db.get_by_id(post_id)
         post_comments = comments.get_by_id(post_id)
         likes_number = likes.count_likes(post_id)
-        return render_template("idea.html", username=session.get("user")[1].capitalize(), post=post, title=session.get("user")[2].capitalize(), bio=session.get("user")[3], img=session.get("user")[4], post_comments=post_comments, likes_number=likes_number)
+        if likes.get_by(post_id, id_) == []:
+            liked  = False
+        else:
+            liked = True
+        return render_template("idea.html", username=session.get("user")[1].capitalize(), post=post, title=session.get("user")[2].capitalize(), bio=session.get("user")[3], img=session.get("user")[4], post_comments=post_comments, likes_number=likes_number,liked=liked)
     return render_template("login.html")
 
 # comminting feature
@@ -139,13 +143,13 @@ def add_like(post_id):
             likes_number = posts_db.get_likes_number(post_id)
             likes_number += 1
             posts_db.update(likes_number,post_id)
-            return jsonify({"like":likes_number})
+            return jsonify({"like":likes_number,"done":True})
         else:
             likes.delete(post_id, id_)
             likes_number = posts_db.get_likes_number(post_id)
             likes_number -= 1
             posts_db.update(likes_number, post_id)
-            return jsonify({"like": likes_number})
+            return jsonify({"like": likes_number, "done": False})
     return render_template("login.html")
 
 
