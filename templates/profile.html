@@ -6,7 +6,8 @@
         <div class="card mb-3 border-0 mt-2" style="max-width: 540px;">
             <div class="row g-0">
                 <div class="col-md-4">
-                    <img style="clip-path: circle();" src="{{url_for('static',filename=img)}}" class="img-fluid rounded-start mt-2" alt="...">
+                            <div style="background-image: url({{url_for('static',filename=img)}});" class="imgy profile">
+                        </div>                  
                 </div>
                 <div class="col-md-8">
                     <div class="card-body">

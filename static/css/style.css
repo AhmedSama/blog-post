@@ -1,4 +1,7 @@
-
+*{
+    margin: 0;
+    padding: 0;
+}
 .font-1{
     font-family: 'Raleway', sans-serif;
 }
@@ -11,5 +14,19 @@
 }
 .hoverme:hover{
    border-bottom: 0.5px solid rgba(0, 0, 0, 0.1);
+}
+.imgy{
+    background-size:cover;
+    background-position: center;
+    border-radius: 50%;
+}
+
+.profile{
+    width: 150px;
+    height: 150px;
+}
+.commenty{
+    width: 50px;
+    height: 50px;
 }
 

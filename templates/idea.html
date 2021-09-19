@@ -8,8 +8,7 @@
                 <div class="container-fluid ">
                     <div class="row pb-1">
                         <div class="col-1 m-0 p-0 ">
-                            <img style="clip-path: circle();" src="{{url_for('static',filename=post[2])}}"
-                                class="img-fluid rounded-start mt-2" alt="...">
+                            <div class="imgy commenty p-0 m-2" style="background-image: url({{url_for('static',filename=post[2])}});"></div>
                         </div>
                         <div class="col m-0 p-0 ">
                             <h5 style="background: linear-gradient(45deg, rgb(255, 0, 106), rgb(0, 170, 255));"
@@ -52,10 +51,10 @@
                         <div class="container">
                             <div class="row m-0 p-0">
                                 <div class="col-2 m-0 p-0">
-                                    <a href="" style="text-decoration: none;">     
-                                        <img style="clip-path: circle();" src="{{url_for('static',filename=comment[5])}}"
-                                            class="img-fluid rounded-start w-50 m-0 p-0" alt="...">
-                                        <h5 style="background: linear-gradient(45deg, rgb(255, 0, 106), rgb(238, 0, 255));" class="font-1 fs-6 card-title badge mt-3 ">{{comment[4]}}
+                                    <a  href="" style="
+                                    text-decoration: none;" class="d-flex">     
+                                        <div class="imgy commenty p-0 mt-1" style="background-image: url({{url_for('static',filename=comment[5])}});"></div>
+                                        <h5 style="background: linear-gradient(45deg, rgb(255, 0, 106), rgb(238, 0, 255));" class="font-1 fs-6 badge mx-3 mt-3 ">{{comment[4]}}
                                         </h5>
                                     </a>
                                 </div>
@@ -94,28 +93,27 @@
             let div3 = document.createElement('div');
             div3.classList.add("col-2", "m-0", "p-0");
             let a = document.createElement('a');
-            a.style= "text-decoration: none;"
-            let img = document.createElement('img');
-            img.style = "clip-path: circle()";
-            img.classList.add("img-fluid", "rounded-start", "m-0", "p-0","w-50");
+            a.style= "text-decoration: none;";
+            a.classList.add("d-flex");
+            let img = document.createElement('div');
+            img.style = "background-image: url(http://127.0.0.1:5000/static/" + final_res.img+")";
+            img.classList.add("imgy", "commenty", "mt-1", "p-0");
 
             let h5 = document.createElement('h5');
             h5.style.background = "linear-gradient(45deg, rgb(255, 0, 106), rgb(238, 0, 255))";
-            h5.classList.add("font-1" , "fs-6" , "card-title" , "badge" , "mt-3");
+            h5.classList.add("font-1" , "fs-6" , "mx-3" , "badge" , "mt-3");
                                 
             let div4 = document.createElement('div');
             div4.classList.add("col","pt-5", "font-1", "m-0", "p-0");
 
             li.appendChild(div1)
             div1.appendChild(div2);
-            div1.appendChild(div2)
             div2.appendChild(div3);
             div2.appendChild(div4);
             div3.appendChild(a);
             a.appendChild(img);
             a.appendChild(h5);
 
-            img.src = "http://127.0.0.1:5000/static/" + final_res.img;
             h5.innerText = final_res.name;
             div4.innerText = final_res.comment
             list_of_comments.insertBefore(li, list_of_comments.firstChild);
