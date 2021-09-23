@@ -45,6 +45,20 @@ def get_all():
     conn.close()
     return data
 
+def get_posts_i_liked(user_id):
+    conn = sqlite3.connect("data.db")
+    cur = conn.cursor()
+    # cur.execute("select rowid,* from posts order by likes_number desc")
+    cur.execute("select post_id from likes where likes.user_id = ?",(user_id,))
+    conn.commit()
+    data = cur.fetchall()
+    # change the list from [(1,),(2,),(3,)]...etc to [1,2,3]
+    def reduce(n):
+        return n[0]
+    data = map(reduce, data)
+    conn.close()
+    return list(data)
+
 
 
 def get_likes_number(post_id):

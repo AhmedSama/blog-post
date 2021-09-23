@@ -23,7 +23,9 @@
                     <div class="col m-0 p-0 ">
                         <h5
                         
+
                          style="background: linear-gradient(45deg, rgb(255, 0, 106), rgb(0, 170, 255));"
+
                           class="font-1 fs-6 card-title badge mt-3 ">{{post[1]}}</h5>
                     </div>
                 </div>
@@ -42,8 +44,13 @@
 
                     <button  id="{{post[3]}}"  class="btn p-0 fs-2 position-relative like-btn">
                         🔥
-                        <span id="likes-number-{{post[3]}}" style="background-color: rgba(255, 0, 115, 0.734);"
+                        <span id="likes-number-{{post[3]}}" 
                         
+                        {%if post[3] in liked_posts%}
+                        style="background-color: rgba(255, 0, 115, 0.734);"
+                        {%else%}
+                        style="background-color: rgba(0, 0, 0, 0.734);"
+                        {%endif%}
                             class="position-absolute font-1 top-0 start-75 translate-middle badge rounded-pill fs-6">
                             {{post[7]}}
                         </span>
@@ -69,7 +76,15 @@
                })
                    .then(res => res.json())
                    .then(data => {
-                       document.getElementById("likes-number-" + l[i].id).innerText = data.like;
+                       if(data.done){
+                           document.getElementById("likes-number-" + l[i].id).style = "background-color: rgba(255, 0, 115, 0.734);"
+                           document.getElementById("likes-number-" + l[i].id).innerText = data.like;
+                       }
+                       else{
+                           document.getElementById("likes-number-" + l[i].id).style = "background-color: rgba(0, 0, 0, 0.734);"
+                        document.getElementById("likes-number-" + l[i].id).innerText = data.like;
+                       }
+                       
                    })
            })
        }

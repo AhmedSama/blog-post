@@ -83,7 +83,8 @@ def all_ideas():
     if session.get("user"):
         id_ = session.get("user")[0]
         posts =posts_db.get_all()
-        return render_template("all_ideas.html", username=session.get("user")[1].capitalize(), posts=posts, title=session.get("user")[2].capitalize(), bio=session.get("user")[3], img=session.get("user")[4])
+        liked_posts = posts_db.get_posts_i_liked(id_)
+        return render_template("all_ideas.html", username=session.get("user")[1].capitalize(), posts=posts, title=session.get("user")[2].capitalize(), bio=session.get("user")[3], img=session.get("user")[4], liked_posts=liked_posts)
     return render_template("login.html")
 
 
