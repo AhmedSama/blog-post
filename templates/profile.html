@@ -1,53 +1,55 @@
 {%extends 'base.html'%}
 {%block title%}my profile{%endblock%}
 {%block content%}
-<div class="container">
     <!-- new test -->
-        <div class="card mb-3 border-0 mt-2" style="max-width: 540px;">
-            <div class="row g-0">
-                <div class="col-md-4">
-                            <div style="background-image: url({{url_for('static',filename=img)}});" class="imgy profile">
-                        </div>                  
+        <div class="profile">
+            <div class="cover"></div>
+            <div class="data border">
+                <div class="profile-img">
+                    <img class="circle-img" src="{{url_for('static',filename=img)}}" alt="blue profile picture">
                 </div>
-                <div class="col-md-8">
-                    <div class="card-body">
-                        <h5 style="background: linear-gradient(45deg, rgb(255, 0, 106), rgb(0, 170, 255));" class="font-1 card-title badge fs-2">{{username}}</h5>
-                        <br>
-                        <p class="card-text fs-6 font-1 badge bg-dark ">{{title}}</p>
-                        <p class="card-text font-2">{{bio}}</p>
-                    </div>
+                <div class="profile-data ">
+                    <h1 class="font-1">{{username}}</h1>
+                    <h3 style="background:rgb(255, 0, 170);" class="font-1 badge fs-6">{{title}}</h3>
+                    <p class="font-1">{{bio}}</p>
                 </div>
+        
             </div>
         </div>
     <!-- end new test -->
-   <hr>
-    <br>
+    <div class="mt-5"></div>
     {%if posts%}
-    <h2><span class="badge bg-dark font-1">My Ideas
-        <svg style="color: #ffc107;" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-lightbulb-fill"
-            viewBox="0 0 16 16">
-            <path
-                d="M2 6a6 6 0 1 1 10.174 4.31c-.203.196-.359.4-.453.619l-.762 1.769A.5.5 0 0 1 10.5 13h-5a.5.5 0 0 1-.46-.302l-.761-1.77a1.964 1.964 0 0 0-.453-.618A5.984 5.984 0 0 1 2 6zm3 8.5a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1l-.224.447a1 1 0 0 1-.894.553H6.618a1 1 0 0 1-.894-.553L5.5 15a.5.5 0 0 1-.5-.5z" />
-        </svg>
-    </span></h2>
-    <div class="my-2 ">
         {%for post in posts%}
-        <div class="card w-sm-100  w-75">
-            <div class="card-body">
-                <a class="btn btn-outline-info border-0" href="{{url_for('idea',post_id=post[0])}}"><h5 class="card-title font-1">{{post[2]}}</h5></a>
-                <p class="card-text font-2">{{post[3]}}</p>
-            </div>
-            <img src="{{url_for('static',filename=post[4])}}" class="card-img-bottom" alt="...">
-            
-        </div>
-        
-        
+                <div class="row">
+                    <div class="col-lg-8 col-md-10 col-sm-12">
+                        <div class="card">
+                            <div class="post-header">
+                                <div class="profile-post-img">
+                                    <img class="circle-img" src="{{url_for('static',filename=img)}}" alt="blue profile picture">
+                                </div>
+                                <div class="profile-post-data ">
+                                    <h1 style="font-size: 15px;" class="font-1 m-0">{{username}}</h1>
+                                </div>
+                
+                            </div>
+                            <div class="card-body">
+                                <!--TDOD the post id is post[0] -->
+                                <a href="{{url_for('idea',post_id=post[0])}}">
+                                <h5 class="card-title font-1">{{post[2]}}</h5>
+                                </a>
+                                <p class="card-text font-1">{{post[3]}}</p>
+                            </div>
+                            <img src="{{url_for('static',filename=post[4])}}" class="card-img-bottom" alt="post image">
+                
+                        </div>
+                    </div>
+                </div>
         {%endfor%}
-    </div>
+
     {%else%}
     <h2 class="font-1">there is no Ideas yet!</h2>
     {%endif%}
-</div>
+
 <script>
     let home2 = document.getElementById("home2");
     home2.classList.add("active");

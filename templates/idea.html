@@ -1,77 +1,68 @@
 {%extends 'base.html'%}
 {%block title%}idea{%endblock%}
 {%block content%}
-<div class="container">
-    <div class="my-2 ">
-        <div class="card  w-75 border-bottom-0">
-            <a href="">
-                <div class="container-fluid ">
-                    <div class="row pb-1">
-                        <div class="col-1 m-0 p-0 ">
-                            <div class="imgy commenty p-0 m-2" style="background-image: url({{url_for('static',filename=post[2])}});"></div>
+<!-- 
+    post[2] profile img
+    post[1] username
+    post[4] title post
+    post[5] post content
+    post[6] post img
+    likes_number :)
+    liked : a bool data detect if u liked the post or not to change the color of like btn
+    comment[5] commenter img
+    comment[4] commentar name
+    comment[1] commentar text
+    post_comments the data of comments
+-->
+    <div class="my-2 ">             
+        <div class="row">
+            <div class="col-lg-8 col-md-10 col-sm-12">
+                <div class="card">
+                    <div class="post-header">
+                        <div class="profile-post-img">
+                            <img class="circle-img" src="{{url_for('static',filename=post[2])}}" alt="profile picture">
                         </div>
-                        <div class="col m-0 p-0 ">
-                            <h5 style="background: linear-gradient(45deg, rgb(255, 0, 106), rgb(0, 170, 255));"
-                                class="font-1 fs-6 card-title badge mt-3 ">{{post[1]}}</h5>
+                        <div class="profile-post-data ">
+                            <h1 style="font-size: 15px;" class="font-1 m-0">{{post[1]}}</h1>
                         </div>
+        
                     </div>
-                </div>
-            </a>
-            <div class="card-body">
-                <h5 class="card-title font-1">{{post[4]}}</h5>
-                <p class="card-text font-2">{{post[5]}}</p>
-            </div>
-            <img src="{{url_for('static',filename=post[6])}}" class="card-img-bottom" alt="...">
-            <div class="container text-center m-1">
-                <button id="like_btn" class="btn p-0 fs-2 position-relative">
-                    🔥
-                    <span id="likes_number"
-                    {%if liked%}
-                        style="background-color: rgb(255, 0, 115);"
-                    {%else%}
-                        style="background-color: black;"
-                    {%endif%}
-                        class="position-absolute font-1 top-0 start-75 translate-middle badge rounded-pill fs-6">
-                        {{likes_number}}
-                    </span>
-                </button>                           
-            </div>
-                <div class="mt-3">
-                    <textarea class="form-control font-1" id="comment" rows="3" name="comment" placeholder="Add comment here..."></textarea>
-                </div>
-                <div class="container-fluid p-0">
-                     <button style="background: linear-gradient(45deg, rgb(0, 255, 238), rgb(51, 0, 255));" class="btn rounded-0 text-light border-0" id="add_comment">commint</button>
-                </div>
-               
-
-            {%if post_comments%}
-            <ul id="list_of_comments" class="list-group list-group-flush">
-                {%for comment in post_comments%}
-                    <li class="list-group-item m-0 p-0">
-                        <div class="container">
-                            <div class="row m-0 p-0">
-                                <div class="col-2 m-0 p-0">
-                                    <a  href="" style="
-                                    text-decoration: none;" class="d-flex">     
-                                        <div class="imgy commenty p-0 mt-1" style="background-image: url({{url_for('static',filename=comment[5])}});"></div>
-                                        <h5 style="background: linear-gradient(45deg, rgb(255, 0, 106), rgb(238, 0, 255));" class="font-1 fs-6 badge mx-3 mt-3 ">{{comment[4]}}
-                                        </h5>
-                                    </a>
+                    <div class="card-body">
+                        <!--TDOD the post id is post[0] -->
+                        <h5 class="card-title font-1">{{post[4]}}</h5>
+                        <p class="card-text font-1">{{post[5]}}</p>
+                    </div>
+                    <img src="{{url_for('static',filename=post[6])}}" class="card-img-bottom" alt="...">
+                    <div class="comments">
+                        <div class="comment-form">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="currentColor"
+                                class="bi bi-telegram btn p-0 mx-1 text-primary" viewBox="0 0 16 16">
+                                <path
+                                    d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM8.287 5.906c-.778.324-2.334.994-4.666 2.01-.378.15-.577.298-.595.442-.03.243.275.339.69.47l.175.055c.408.133.958.288 1.243.294.26.006.549-.1.868-.32 2.179-1.471 3.304-2.214 3.374-2.23.05-.012.12-.026.166.016.047.041.042.12.037.141-.03.129-1.227 1.241-1.846 1.817-.193.18-.33.307-.358.336a8.154 8.154 0 0 1-.188.186c-.38.366-.664.64.015 1.088.327.216.589.393.85.571.284.194.568.387.936.629.093.06.183.125.27.187.331.236.63.448.997.414.214-.02.435-.22.547-.82.265-1.417.786-4.486.906-5.751a1.426 1.426 0 0 0-.013-.315.337.337 0 0 0-.114-.217.526.526 0 0 0-.31-.093c-.3.005-.763.166-2.984 1.09z" />
+                            </svg>
+        
+                            <textarea class="form-control font-1 " placeholder="write comment..."></textarea>
+                        </div>
+                        {%if post_comments%}
+                        {%for comment in post_comments%}
+                        <div class="comment-data">
+                            <div class="comment line pt-2">
+                                <div class="comment-img">
+                                    <img class="circle-img" src="{{url_for('static',filename=comment[5])}}">
                                 </div>
-                                <div class="col m-0 p-0 pt-5 font-1">
-                                    {{comment[1]}}
+                                <div class="comment-body">
+                                    <div class="comment-name text-secondary font-1">{{comment[4]}}</div>
+                                    <div class="comment-text font-1">{{comment[1]}}</div>
                                 </div>
                             </div>
                         </div>
-                    </li>
-                        
-                        
-                {%endfor%}
-                </ul>
-            {%endif%}
+                        {%endfor%}
+                        {%endif%}
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
-</div>
 
 <script>
     function post_comment(data){
