@@ -83,6 +83,20 @@ background: #ffdd00;
     border-radius: 50%;
     margin: 10px;
 }
+.cursor-p{
+    cursor: pointer;
+}
+.like-comment{
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+}
+.like-comment > *{
+    margin: 10px;
+}
+
+
+
 .comment{
     display: flex;
     align-items: flex-start;
@@ -121,6 +135,26 @@ background: #ffdd00;
     margin-top: 5px;
 }
 
+/* animations */
+
+@keyframes comment_animation{
+    50%{
+        transform: scale(1.03);
+    }
+    100%{
+        transform: scale(1);
+    }
+}
+
+
+@keyframes like_animation{
+    50%{
+        transform: scale(1.5);
+    }
+    100%{
+        transform: scale(1);
+    }
+}
 
 
 @media (max-width: 950px){

@@ -6,7 +6,7 @@ ROOT = path.dirname(path.realpath(__file__))
 def make_db():
     conn = sqlite3.connect("data.db")
     cur = conn.cursor()
-    cur.execute("""create table users(
+    cur.execute("""create table IF NOT EXISTS users(
         username varchar(30) not null,
         email varchar(30) not null,
         pwd varchar(60) not null,

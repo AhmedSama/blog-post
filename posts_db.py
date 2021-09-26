@@ -6,7 +6,7 @@ ROOT = path.dirname(path.realpath(__file__))
 def make_db():
     conn = sqlite3.connect("data.db")
     cur = conn.cursor()
-    cur.execute("""create table posts(
+    cur.execute("""create table IF NOT EXISTS posts(
         user_id integer not null,
         title varchar(30) not null,
         content text not null,
@@ -31,6 +31,42 @@ def alter():
     cur.execute("ALTER TABLE posts ADD likes_number INT NOT NULL DEFAULT 0")
     conn.commit()
     conn.close()
+
+
+def get_all_with_comments_number():
+    conn = sqlite3.connect("data.db")
+    cur = conn.cursor()
+    # show the post and make the comments in one col together seperated by comma(,)
+    cur.execute("""SELECT posts.title,posts.likes_number from posts""")
+    # show all posts with one comment
+    # cur.execute("""SELECT posts.rowid, posts.title,comments.user_id,comments.content
+    #             FROM posts
+    #              JOIN comments  ON posts.rowid = comments.post_id
+    #             GROUP BY posts.rowid""")
+    conn.commit()
+    data = cur.fetchall()
+    conn.close()
+    return data
+print(get_all_with_comments_number())
+
+def get_one_with_comments_number(post_id):
+    conn = sqlite3.connect("data.db")
+    cur = conn.cursor()
+    # show the post and make the comments in one col together seperated by comma(,)
+    cur.execute("""SELECT posts.title,count(comments.content)
+                FROM posts
+                LEFT JOIN comments  ON posts.rowid = comments.post_id
+               where posts.rowid = ? GROUP BY posts.rowid  """,(post_id,))
+    # show all posts with one comment
+    # cur.execute("""SELECT posts.rowid, posts.title,comments.user_id,comments.content
+    #             FROM posts
+    #              JOIN comments  ON posts.rowid = comments.post_id
+    #             GROUP BY posts.rowid""")
+    conn.commit()
+    data = cur.fetchall()
+    conn.close()
+    return data
+# print(get_all_with_comments())
 
 
 

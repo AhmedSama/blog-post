@@ -2,6 +2,7 @@
 {%block title%}idea{%endblock%}
 {%block content%}
 <!-- 
+    post[3] post_id
     post[2] profile img
     post[1] username
     post[4] title post
@@ -14,59 +15,69 @@
     comment[1] commentar text
     post_comments the data of comments
 -->
-    <div class="my-2 ">             
-        <div class="row">
-            <div class="col-lg-8 col-md-10 col-sm-12">
-                <div class="card">
-                    <div class="post-header">
-                        <div class="profile-post-img">
-                            <img class="circle-img" src="{{url_for('static',filename=post[2])}}" alt="profile picture">
+           
+<div class="row">
+    <div class="col-lg-8 col-md-10 col-sm-12">
+        <div class="card">
+            <div class="post-header">
+                <div class="profile-post-img">
+                    <img class="circle-img" src="{{url_for('static',filename=post[2])}}" alt="profile picture">
+                </div>
+                <div class="profile-post-data ">
+                    <h1 style="font-size: 15px;" class="font-1 m-0">{{post[1]}}</h1>
+                </div>
+
+            </div>
+            <div class="card-body">
+                <!--TDOD the post id is post[0] -->
+                <h5 class="card-title font-1">{{post[4]}}</h5>
+                <p class="card-text font-1">{{post[5]}}</p>
+            </div>
+            <img src="{{url_for('static',filename=post[6])}}" class="card-img-bottom" alt="...">
+            <div class="like-comment mt-3 ">
+                <div class="comments-number m-0 p-0">23</div>
+                <i class="bi bi-chat-right-dots cursor-p fs-4"></i>
+                <div class="mx-2"></div>
+                <div id="likes_number" class="likes-number m-0 p-0 ">{{likes_number}}</div>
+                {%if liked%}
+                    <i id="like_btn" style="color: #ff0055;" class="bi bi-heart-fill cursor-p fs-4"></i>
+                
+                
+                {%else%}
+                    <i id="like_btn" class="bi bi-heart-fill cursor-p fs-4"></i>
+                {%endif%}
+            </div>
+            <div id="comments" class="comments">
+                <div class="comment-form">
+                    <i id="add_comment" class="bi bi-telegram btn p-0 mx-1 border-0 text-primary fs-3 font-2"></i>
+                    <textarea id="comment" class="form-control font-1 " placeholder="write comment..."></textarea>
+                </div>
+                <div id="comment-data" class="comment-data">
+                {%if post_comments%}
+                {%for comment in post_comments%}
+                
+                    <div class="comment line pt-2">
+                        <div class="comment-img">
+                            <img class="circle-img" src="{{url_for('static',filename=comment[2])}}">
                         </div>
-                        <div class="profile-post-data ">
-                            <h1 style="font-size: 15px;" class="font-1 m-0">{{post[1]}}</h1>
+                        <div class="comment-body">
+                            <div class="comment-name text-secondary font-1">{{comment[1]}}</div>
+                            <div class="comment-text font-1">{{comment[0]}}</div>
                         </div>
-        
                     </div>
-                    <div class="card-body">
-                        <!--TDOD the post id is post[0] -->
-                        <h5 class="card-title font-1">{{post[4]}}</h5>
-                        <p class="card-text font-1">{{post[5]}}</p>
-                    </div>
-                    <img src="{{url_for('static',filename=post[6])}}" class="card-img-bottom" alt="...">
-                    <div class="comments">
-                        <div class="comment-form">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="currentColor"
-                                class="bi bi-telegram btn p-0 mx-1 text-primary" viewBox="0 0 16 16">
-                                <path
-                                    d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM8.287 5.906c-.778.324-2.334.994-4.666 2.01-.378.15-.577.298-.595.442-.03.243.275.339.69.47l.175.055c.408.133.958.288 1.243.294.26.006.549-.1.868-.32 2.179-1.471 3.304-2.214 3.374-2.23.05-.012.12-.026.166.016.047.041.042.12.037.141-.03.129-1.227 1.241-1.846 1.817-.193.18-.33.307-.358.336a8.154 8.154 0 0 1-.188.186c-.38.366-.664.64.015 1.088.327.216.589.393.85.571.284.194.568.387.936.629.093.06.183.125.27.187.331.236.63.448.997.414.214-.02.435-.22.547-.82.265-1.417.786-4.486.906-5.751a1.426 1.426 0 0 0-.013-.315.337.337 0 0 0-.114-.217.526.526 0 0 0-.31-.093c-.3.005-.763.166-2.984 1.09z" />
-                            </svg>
-        
-                            <textarea class="form-control font-1 " placeholder="write comment..."></textarea>
-                        </div>
-                        {%if post_comments%}
-                        {%for comment in post_comments%}
-                        <div class="comment-data">
-                            <div class="comment line pt-2">
-                                <div class="comment-img">
-                                    <img class="circle-img" src="{{url_for('static',filename=comment[5])}}">
-                                </div>
-                                <div class="comment-body">
-                                    <div class="comment-name text-secondary font-1">{{comment[4]}}</div>
-                                    <div class="comment-text font-1">{{comment[1]}}</div>
-                                </div>
-                            </div>
-                        </div>
-                        {%endfor%}
-                        {%endif%}
-                    </div>
+                
+                {%endfor%}
+                {%endif%}
                 </div>
             </div>
         </div>
     </div>
+</div>
+
 
 <script>
     function post_comment(data){
-        fetch("{{url_for('add_comment',post_id = post[0])}}",{
+        fetch("{{url_for('add_comment',post_id = post[3])}}",{
             method:"POST",
             headers: {
                 'Content-Type':'application/json'
@@ -75,39 +86,33 @@
         })
         .then(res => res.json())
         .then(final_res => {
-            let li = document.createElement('li');
-            li.classList.add("list-group-item", "m-0", "p-0");
-            let div1 = document.createElement('div');
-            div1.classList.add("container");
-            let div2 = document.createElement('div');
-            div2.classList.add("row", "m-0", "p-0");
-            let div3 = document.createElement('div');
-            div3.classList.add("col-2", "m-0", "p-0");
-            let a = document.createElement('a');
-            a.style= "text-decoration: none;";
-            a.classList.add("d-flex");
-            let img = document.createElement('div');
-            img.style = "background-image: url(http://127.0.0.1:5000/static/" + final_res.img+")";
-            img.classList.add("imgy", "commenty", "mt-1", "p-0");
+            let comment_data = document.getElementById("comment-data");
+            let div1 = document.createElement("div");
+            div1.classList.add("comment","line","pt-2");
+            let div2 = document.createElement("div");
+            div2.classList.add("comment-img");
+            let img = document.createElement("img");
+            img.classList.add("circle-img");
+            img.src = "http://127.0.0.1:5000/static/" + final_res.img
+            
+            let div3 = document.createElement("div");
+            div3.classList.add("comment-body");
+            let div4 = document.createElement("div");
+            div4.classList.add("comment-name","text-secondary","font-1");
+            let div5 = document.createElement("div");
+            div5.classList.add("comment-text","font-1");
 
-            let h5 = document.createElement('h5');
-            h5.style.background = "linear-gradient(45deg, rgb(255, 0, 106), rgb(238, 0, 255))";
-            h5.classList.add("font-1" , "fs-6" , "mx-3" , "badge" , "mt-3");
-                                
-            let div4 = document.createElement('div');
-            div4.classList.add("col","pt-5", "font-1", "m-0", "p-0");
+            div4.innerText = final_res.name;
+            div5.innerText = final_res.comment
 
-            li.appendChild(div1)
             div1.appendChild(div2);
-            div2.appendChild(div3);
-            div2.appendChild(div4);
-            div3.appendChild(a);
-            a.appendChild(img);
-            a.appendChild(h5);
+            div2.appendChild(img);
 
-            h5.innerText = final_res.name;
-            div4.innerText = final_res.comment
-            list_of_comments.insertBefore(li, list_of_comments.firstChild);
+            div1.appendChild(div3);
+            div3.appendChild(div4);
+            div3.appendChild(div5);
+            div1.style.animation = "1s comment_animation ease-in"
+            comment_data.insertBefore(div1, comment_data.firstChild);
         })
     };
     
@@ -125,25 +130,38 @@
     }
 
 
-    let like_btn = document.getElementById("like_btn");
+    // like functionality
+
     let likes_number = document.getElementById("likes_number");
-  
-    like_btn.addEventListener("click",()=>{
-        fetch("{{url_for('add_like',post_id= post[0])}}",{
+
+    document.getElementById("like_btn").addEventListener("click",()=>{
+        fetch("{{url_for('add_like',post_id = post[3])}}",{
             method:"POST",
         })
         .then(res=>res.json())
         .then(data=>{
             if(data.done){
-                likes_number.style.background = "rgb(255, 0, 115)";
+                //make like btn red
+                document.getElementById("like_btn").classList.add("bi", "bi-heart-fill", "cursor-p", "fs-4");
+                document.getElementById("like_btn").style.animation = "0.5s like_animation";
+                document.getElementById("like_btn").style.color = "#ff0055";
+                
             }
             else{
-                likes_number.style.background = "black";
+                //make like btn black
+                
+                document.getElementById("like_btn").classList.add("bi", "bi-heart-fill", "cursor-p", "fs-4");
+                document.getElementById("like_btn").style.animation = "0.5s like_animation";
+                document.getElementById("like_btn").style.color = "#000";
+                
             }
+            setTimeout(()=>{
+                document.getElementById("like_btn").style.removeProperty("animation");
+            },500)
             document.getElementById("likes_number").innerText = data.like;
         })
 
-    })
+    }) 
 
 
 </script>

@@ -48,7 +48,16 @@
                             <p class="card-text font-1">{{post[5]}}</p>
                         </div>
                         <img src="{{url_for('static',filename=post[6])}}" class="card-img-bottom" alt="post image">
-            
+                        <div class="like-comment mt-3 ">
+                            <div class="comments-number m-0 p-0">23</div>
+                            <a href="{{url_for('idea',post_id=post[3])}}#comments">
+                                <i class="bi bi-chat-right-dots cursor-p fs-4"></i>
+                            </a>
+                            
+                            <div class="mx-2"></div>
+                            <div class="likes-number m-0 p-0 ">212</div>
+                            <i style="color: #ff0055;" class="bi bi-heart-fill cursor-p fs-4"></i>
+                        </div>
                     </div>
                 </div>
             </div>

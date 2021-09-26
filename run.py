@@ -108,7 +108,6 @@ def add_comment(post_id):
     if session.get("user"):
         comment = request.get_json()
         comment = comment.get("the_comment")
-        
         # TODO handling empty comments later
         if comment == "":
             return jsonify({"error":"no comment"})
@@ -117,7 +116,7 @@ def add_comment(post_id):
         user_data = models.get_by(id_)
         name = user_data[1]
         img = user_data[6]
-        print(name,img)
+
         comments.add(comment,post_id,id_)
         return jsonify({"comment":comment,"name":name ,"img":img })
     return render_template("login.html")
@@ -141,14 +140,13 @@ def add_like(post_id):
         id_ = session.get("user")[0]
         if likes.get_by(post_id,id_) == []:
             likes.add(post_id,id_)
-            likes_number = posts_db.get_likes_number(post_id)
-            likes_number += 1
+            # likes_number = posts_db.get_likes_number(post_id)
+            likes_number = likes.count_likes(post_id)
             posts_db.update(likes_number,post_id)
             return jsonify({"like":likes_number,"done":True})
         else:
             likes.delete(post_id, id_)
-            likes_number = posts_db.get_likes_number(post_id)
-            likes_number -= 1
+            likes_number = likes.count_likes(post_id)
             posts_db.update(likes_number, post_id)
             return jsonify({"like": likes_number, "done": False})
     return render_template("login.html")
@@ -180,6 +178,10 @@ def logout():
     return redirect(url_for("login"))
 
 if __name__ == "__main__":
+    models.make_db()
+    posts_db.make_db()
+    comments.make_db()
+    likes.make_db()
     app.run(debug=True)
 
 

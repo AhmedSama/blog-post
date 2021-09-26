@@ -7,7 +7,7 @@ ROOT = path.dirname(path.realpath(__file__))
 def make_db():
     conn = sqlite3.connect("data.db")
     cur = conn.cursor()
-    cur.execute("""create table likes(
+    cur.execute("""create table IF NOT EXISTS likes(
         post_id integer not null,
         user_id integer not null
     )""")

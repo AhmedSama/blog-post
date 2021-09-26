@@ -7,7 +7,7 @@ ROOT = path.dirname(path.realpath(__file__))
 def make_db():
     conn = sqlite3.connect("data.db")
     cur = conn.cursor()
-    cur.execute("""create table comments(
+    cur.execute("""create table IF NOT EXISTS comments(
         content text not null,
         post_id integer not null,
         user_id integer not null
@@ -46,7 +46,7 @@ def get_by_id(post_id):
     conn = sqlite3.connect("data.db")
     cur = conn.cursor()
     cur.execute(
-        "select comments.rowid,comments.*,users.username,users.img from comments join users on users.rowid = comments.user_id where comments.post_id=? order by comments.rowid desc", (post_id,))
+        "select comments.content,users.username,users.img from comments join users on users.rowid = comments.user_id where comments.post_id=? order by comments.rowid desc", (post_id,))
     conn.commit()
     data = cur.fetchall()
     conn.close()
