@@ -47,7 +47,7 @@ def get_all_with_comments_number():
     data = cur.fetchall()
     conn.close()
     return data
-print(get_all_with_comments_number())
+
 
 def get_one_with_comments_number(post_id):
     conn = sqlite3.connect("data.db")

@@ -28,7 +28,7 @@ def get_all():
     conn = sqlite3.connect("data.db")
     cur = conn.cursor()
     cur.execute(
-        "select likes.user_id,posts.content  from posts inner join likes on posts.rowid=likes.post_id ")
+        "select likes.user_id,posts.content  from posts inner join likes on posts.rowid=likes.post_id;")
     conn.commit()
     data = cur.fetchall()
     conn.close()
@@ -38,8 +38,7 @@ def get_all():
 def delete(post_id, user_id):
     conn = sqlite3.connect("data.db")
     cur = conn.cursor()
-    cur.execute(
-        "delete from likes where post_id = ? and user_id = ?", (post_id, user_id))
+    cur.execute("delete from likes where post_id = ? and user_id = ?;", (post_id, user_id))
     conn.commit()
     conn.close()
 
@@ -58,7 +57,7 @@ def get_by(post_id,user_id):
     conn = sqlite3.connect("data.db")
     cur = conn.cursor()
     cur.execute(
-        "select * from likes where post_id=? and user_id = ?", (post_id,user_id))
+        "select * from likes where post_id=? and user_id = ?;", (post_id,user_id))
     conn.commit()
     data = cur.fetchall()
     conn.close()

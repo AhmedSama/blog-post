@@ -53,22 +53,14 @@
                     <textarea id="comment" class="form-control font-1 " placeholder="write comment..."></textarea>
                 </div>
                 <div id="comment-data" class="comment-data">
-                {%if post_comments%}
-                {%for comment in post_comments%}
-                
-                    <div class="comment line pt-2">
-                        <div class="comment-img">
-                            <img class="circle-img" src="{{url_for('static',filename=comment[2])}}">
-                        </div>
-                        <div class="comment-body">
-                            <div class="comment-name text-secondary font-1">{{comment[1]}}</div>
-                            <div class="comment-text font-1">{{comment[0]}}</div>
-                        </div>
-                    </div>
-                
-                {%endfor%}
-                {%endif%}
+                <!-- place holder for the comments -->
                 </div>
+                <div class="container text-center">
+                    <a id="load-comments-btn" class="my-3 cursor-p fs-3">
+                    <i class="bi bi-plus-circle"></i>
+                </a>
+                </div>
+                
             </div>
         </div>
     </div>
@@ -76,6 +68,78 @@
 
 
 <script>
+    let offset = 0;
+    let limit = 8;
+    function loadComments(data){
+        fetch("{{url_for('comment_api',post_id = post[3])}}",{
+            method:"POST",
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            //data is the offset and the limit
+            body: JSON.stringify(data)
+        })
+        .then(response => response.json())
+        .then((finalData)=>{
+            //cheack if there are comments in the post 
+            if(finalData.comments == "empty"){
+                document.getElementById("load-comments-btn").remove();
+                return;
+            }
+            //if there are comments so load them in to html
+            for(let theData in finalData.comments){
+                let comment = finalData.comments[theData][0];
+                let name = finalData.comments[theData][1];
+                let imgy = finalData.comments[theData][2];
+                //add the comments to html
+                //------------------
+                let comment_data = document.getElementById("comment-data");
+                let div1 = document.createElement("div");
+                div1.classList.add("comment", "line", "pt-2");
+                let div2 = document.createElement("div");
+                div2.classList.add("comment-img");
+                let img = document.createElement("img");
+                img.classList.add("circle-img");
+                img.src = "http://127.0.0.1:5000/static/" + imgy
+
+                let div3 = document.createElement("div");
+                div3.classList.add("comment-body");
+                let div4 = document.createElement("div");
+                div4.classList.add("comment-name", "text-secondary", "font-1");
+                let div5 = document.createElement("div");
+                div5.classList.add("comment-text", "font-1");
+
+                div4.innerText = name;
+                div5.innerText = comment
+
+                div1.appendChild(div2);
+                div2.appendChild(img);
+
+                div1.appendChild(div3);
+                div3.appendChild(div4);
+                div3.appendChild(div5);
+                comment_data.append(div1);
+                //------------------
+            }
+            //cheacking if there are any comments left (note : server do the cheack on comment_api)
+            if(finalData.end){
+                document.getElementById("load-comments-btn").remove();
+            }
+            offset += limit;
+        })
+    }
+
+    loadComments({
+        lim:limit,
+        off:offset
+    })
+    document.getElementById("load-comments-btn").addEventListener("click",(e)=>{
+        loadComments({
+            lim: limit,
+            off: offset
+        })
+    })
+
     function post_comment(data){
         fetch("{{url_for('add_comment',post_id = post[3])}}",{
             method:"POST",
@@ -145,19 +209,21 @@
                 document.getElementById("like_btn").classList.add("bi", "bi-heart-fill", "cursor-p", "fs-4");
                 document.getElementById("like_btn").style.animation = "0.5s like_animation";
                 document.getElementById("like_btn").style.color = "#ff0055";
-                
+                document.getElementById("like_btn").addEventListener("animationend", () => {
+                    document.getElementById("like_btn").style.removeProperty("animation");
+                })
             }
             else{
                 //make like btn black
                 
                 document.getElementById("like_btn").classList.add("bi", "bi-heart-fill", "cursor-p", "fs-4");
-                document.getElementById("like_btn").style.animation = "0.5s like_animation";
+                document.getElementById("like_btn").style.animation = "0.5s delike_animation";
                 document.getElementById("like_btn").style.color = "#000";
+                document.getElementById("like_btn").addEventListener("animationend",()=>{
+                    document.getElementById("like_btn").style.removeProperty("animation");
+                })
                 
             }
-            setTimeout(()=>{
-                document.getElementById("like_btn").style.removeProperty("animation");
-            },500)
             document.getElementById("likes_number").innerText = data.like;
         })
 

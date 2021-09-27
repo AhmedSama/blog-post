@@ -135,14 +135,25 @@ background: #ffdd00;
     margin-top: 5px;
 }
 
+.comment-data{
+    position: relative;
+}
+
+
 /* animations */
 
 @keyframes comment_animation{
+    0%{
+        transform: scale(0.05);
+        opacity: 0.01;
+    }
     50%{
-        transform: scale(1.03);
+        transform: scale(1.02);
+        opacity: 0.5;
     }
     100%{
         transform: scale(1);
+        opacity: 1;
     }
 }
 
@@ -155,7 +166,16 @@ background: #ffdd00;
         transform: scale(1);
     }
 }
+@keyframes delike_animation{
 
+    50%{
+        transform: scale(0.5);
+    }
+
+    100%{
+        transform: scale(1);
+    }
+}
 
 @media (max-width: 950px){
     .data{

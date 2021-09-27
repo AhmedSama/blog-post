@@ -88,18 +88,39 @@ def all_ideas():
     return render_template("login.html")
 
 
+
+@app.route("/comments_api/<int:post_id>",methods=["POST"])
+def comment_api(post_id):
+    # data containes offset and limit
+    data = request.get_json()
+    offset = data.get("off")
+    limit = data.get("lim") 
+    # putting + 1 to cheack if there is any more data or not
+    comments_data = comments.get_by_id_api(post_id,offset,limit+1)
+    if comments_data:
+        # if number of comments left is less than limit + 1 then there is no more comments
+        if len(comments_data) < limit + 1:
+            return jsonify({"comments": comments_data,"end":True})
+        # if number of comments equal to limit + 1 then there are comments left
+        elif len(comments_data) == limit + 1:
+            # we remove the last comment cuz we need comments = limit number
+            comments_data.pop()
+            return jsonify({"comments": comments_data, "end": False})
+    else:
+        return jsonify({"comments": "empty"})
+    
+
 @app.route("/idea/<int:post_id>")
 def idea(post_id):
     if session.get("user"):
         id_ = session.get("user")[0]
         post = posts_db.get_by_id(post_id)
-        post_comments = comments.get_by_id(post_id)
         likes_number = likes.count_likes(post_id)
         if likes.get_by(post_id, id_) == []:
             liked  = False
         else:
             liked = True
-        return render_template("idea.html", username=session.get("user")[1].capitalize(), post=post, title=session.get("user")[2].capitalize(), bio=session.get("user")[3], img=session.get("user")[4], post_comments=post_comments, likes_number=likes_number,liked=liked)
+        return render_template("idea.html", username=session.get("user")[1].capitalize(), post=post, title=session.get("user")[2].capitalize(), bio=session.get("user")[3], img=session.get("user")[4], likes_number=likes_number,liked=liked)
     return render_template("login.html")
 
 # comminting feature

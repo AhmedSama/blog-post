@@ -42,11 +42,23 @@ def delete(id_):
     conn.commit()
     conn.close()
 
+
 def get_by_id(post_id):
     conn = sqlite3.connect("data.db")
     cur = conn.cursor()
     cur.execute(
         "select comments.content,users.username,users.img from comments join users on users.rowid = comments.user_id where comments.post_id=? order by comments.rowid desc", (post_id,))
+    conn.commit()
+    data = cur.fetchall()
+    conn.close()
+    return data
+
+def get_by_id_api(post_id, offset, limit):
+    conn = sqlite3.connect("data.db")
+    cur = conn.cursor()
+    # limit ?,?",(offset,limit)
+    cur.execute(
+        "select comments.content,users.username,users.img from comments join users on users.rowid = comments.user_id where comments.post_id=? order by comments.rowid desc limit ?,?", (post_id, offset, limit))
     conn.commit()
     data = cur.fetchall()
     conn.close()
