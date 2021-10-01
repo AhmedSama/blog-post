@@ -34,6 +34,14 @@ def get_all():
     conn.close()
     return data
 
+def get_comments_number(post_id):
+    conn = sqlite3.connect("data.db")
+    cur = conn.cursor()
+    cur.execute("select count(*) from comments where post_id = ?",(post_id,))
+    conn.commit()
+    data = cur.fetchone()
+    conn.close()
+    return data[0]
 
 def delete(id_):
     conn = sqlite3.connect("data.db")

@@ -11,7 +11,8 @@ def make_db():
         title varchar(30) not null,
         content text not null,
         image varchar(60) not null,
-        likes_number INT NOT NULL DEFAULT 0
+        likes_number INT NOT NULL default 0,
+        comments_number int not null default 0
     )""")
     conn.commit()
     conn.close()
@@ -75,7 +76,7 @@ def get_all():
     conn = sqlite3.connect("data.db")
     cur = conn.cursor()
     # cur.execute("select rowid,* from posts order by likes_number desc")
-    cur.execute("select users.rowid,users.username,users.img,posts.rowid,posts.title,posts.content,posts.image,posts.likes_number,posts.user_id from users join posts on users.rowid = posts.user_id order by likes_number desc")
+    cur.execute("select users.rowid,users.username,users.img,posts.rowid,posts.title,posts.content,posts.image,posts.likes_number,posts.user_id,posts.comments_number from users join posts on users.rowid = posts.user_id order by likes_number desc")
     conn.commit()
     data = cur.fetchall()
     conn.close()
@@ -122,7 +123,13 @@ def update(likes_number,post_id):
     conn.commit()
     conn.close()
 
-
+def update_comments(comments_number,post_id):
+    conn = sqlite3.connect("data.db")
+    cur = conn.cursor()
+    cur.execute("update posts set comments_number = ? where rowid = ?",
+                (comments_number, post_id))
+    conn.commit()
+    conn.close()
 
 def get_by(user_id):
     conn = sqlite3.connect("data.db")
@@ -138,7 +145,7 @@ def get_by_id(post_id):
     conn = sqlite3.connect("data.db")
     cur = conn.cursor()
     cur.execute(
-        "select users.rowid,users.username,users.img,posts.rowid,posts.title,posts.content,posts.image,posts.likes_number from users join posts on users.rowid = posts.user_id where posts.rowid=?", (post_id,))
+        "select users.rowid,users.username,users.img,posts.rowid,posts.title,posts.content,posts.image,posts.likes_number,posts.comments_number from users join posts on users.rowid = posts.user_id where posts.rowid=?", (post_id,))
     conn.commit()
     data = cur.fetchone()
     conn.close()

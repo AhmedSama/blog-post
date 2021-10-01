@@ -129,7 +129,7 @@ def add_comment(post_id):
     if session.get("user"):
         comment = request.get_json()
         comment = comment.get("the_comment")
-        # TODO handling empty comments later
+        comments_number = comments.get_comments_number(post_id)
         if comment == "":
             return jsonify({"error":"no comment"})
 
@@ -139,7 +139,8 @@ def add_comment(post_id):
         img = user_data[6]
 
         comments.add(comment,post_id,id_)
-        return jsonify({"comment":comment,"name":name ,"img":img })
+        posts_db.update_comments(comments_number+1,post_id)
+        return jsonify({"comment": comment, "name": name, "img": img, "comments_number": comments_number + 1})
     return render_template("login.html")
 
 # test api
