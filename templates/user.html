@@ -1,0 +1,67 @@
+{%extends 'base.html'%}
+{%block title%}{{user[1]}} - profile{%endblock%}
+{%block content%}
+<!-- new test -->
+<div class="profile">
+    <div id="cover" class="cover"></div>
+    <div class="data border">
+        <div class="profile-img">
+            <img class="circle-img" src="{{url_for('static',filename=user[6])}}" alt="blue profile picture">
+        </div>
+        <div class="profile-data ">
+            <h1 class="font-1">{{user[1]}}</h1>
+            <h3 style="background:rgb(255, 0, 170);" class="font-1 badge fs-6">{{user[4]}}</h3>
+            <p class="font-1">{{user[5]}}</p>
+        </div>
+
+    </div>
+</div>
+<!-- end new test -->
+<div class="mt-5"></div>
+{%if posts%}
+{%for post in posts%}
+<div class="row">
+    <div class="col-lg-8 col-md-10 col-sm-12">
+        <div class="card">
+            <div class="post-header">
+                <div class="profile-post-img">
+                    <img class="circle-img" src="{{url_for('static',filename=user[6])}}" alt="blue profile picture">
+                </div>
+                <div class="profile-post-data ">
+                    <h1 style="font-size: 15px;" class="font-1 m-0">{{user[1]}}</h1>
+                </div>
+
+            </div>
+            <div class="card-body">
+                <a href="{{url_for('idea',post_id=post[0])}}">
+                    <h5 class="card-title font-1">{{post[2]}}</h5>
+                </a>
+                <p class="card-text font-1">{{post[3]}}</p>
+            </div>
+            <img src="{{url_for('static',filename=post[4])}}" class="card-img-bottom" alt="post image">
+            <div class="like-comment mt-3 ">
+                <div class="comments-number m-0 p-0">{{post[6]}}</div>
+                <a href="{{url_for('idea',post_id = post[0])}}#comment-data"><i
+                        class="bi bi-chat-right-dots cursor-p fs-4"></i></a>
+
+                <div class="mx-2"></div>
+                <div class="likes-number m-0 p-0 ">{{post[5]}}</div>
+                <i  class="bi bi-heart-fill cursor-p fs-4"></i>
+            </div>
+        </div>
+    </div>
+</div>
+{%endfor%}
+
+{%else%}
+<h2 class="font-1">there is no Ideas yet!</h2>
+{%endif%}
+
+<script>
+    document.getElementById("cover").style.background = `{{user[7]}}`;
+    let home2 = document.getElementById("home2");
+    home2.classList.add("active");
+</script>
+
+
+{%endblock%}

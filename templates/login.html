@@ -1,9 +1,11 @@
 {%extends 'base.html'%}
 {%block title%}Login{%endblock%}
 {%block content%}
-<div class="container">
+<div class="">
     <h2 class="text-center">Login page</h2>
-    <form class="p-5 border w-75 text-center container" method="POST" action="{{url_for('login')}}">
+
+    <div class="col p-2 col-lg-8 col-sm-12 m-auto">
+    <form class=" border text-center p-1" method="POST" action="{{url_for('login')}}">
         <div class="mb-3">
             <label for="username" class="form-label">Username</label>
             <input type="text" class="form-control" id="username" name="username">
@@ -14,6 +16,7 @@
         </div>
         <button type="submit" class="btn btn-primary">Login</button>
     </form>
+    </div>
 
 </div>
 

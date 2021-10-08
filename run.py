@@ -1,5 +1,6 @@
 from flask import Flask,render_template,request,redirect,url_for,session,jsonify
 import models,posts_db,comments,likes
+from common_color import most_common_color
 from os import path,mkdir
 
 ROOT = path.dirname(path.abspath(__file__))
@@ -9,11 +10,15 @@ app.secret_key = "uysiojxoasidbh"
 @app.route("/")
 @app.route("/home")
 def home():
+    if session.get("user"):
+        return redirect(url_for("profile"))
     return render_template("home.html")
 
 
 @app.route("/signup",methods=["GET","POST"])
 def signup():
+    if session.get("user"):
+        return redirect(url_for("profile"))
     if request.method == "POST":
         username = request.form.get("username")
         email = request.form.get("email")
@@ -32,13 +37,19 @@ def signup():
                         "media", str(id_), "profile_"+str(id_)))
         img.save(path.join(ROOT, "static", "images",
                            "media", str(id_), "profile_"+str(id_), img.filename))
-        models.update(img_url,id_)
+        
+        # TODO make a profile bg 
+        bg_color = most_common_color(path.join(ROOT, "static", "images",
+                                               "media", str(id_), "profile_"+str(id_), img.filename))
+        models.update(img_url,bg_color,id_)
         return render_template("login.html")
     return render_template("signup.html")
 
 
 @app.route("/login", methods=["GET", "POST"])
 def login():
+    if session.get("user"):
+        return redirect(url_for("profile"))
     if request.method == "POST":
         username = request.form.get("username")
         pwd = request.form.get("pwd")
@@ -63,11 +74,25 @@ def login():
 def profile():
     if session.get("user"):
         id_ = session.get("user")[0]
-
         posts = posts_db.get_by(id_)
-        return render_template("profile.html", username=session.get("user")[1].capitalize(), posts=posts, title=session.get("user")[2].capitalize(), bio=session.get("user")[3], img=session.get("user")[4])
-    return render_template("login.html")
+        return render_template("profile.html", username=session.get("user")[1].capitalize(), posts=posts, title=session.get("user")[2].capitalize(), bio=session.get("user")[3], img=session.get("user")[4], bg_color=session.get("user")[5])
+    return redirect(url_for("login"))
 
+
+@app.route("/user/<int:user_id>")
+def user(user_id):
+    users_data = models.get_by(user_id)
+    if not users_data:
+        return redirect(url_for("profile"))
+    posts = posts_db.get_by(user_id)
+    return render_template("user.html",user = users_data,posts=posts)
+
+
+@app.route("/search")
+def search():
+    username = request.args.get("search")
+    users = models.get_all(username)
+    return render_template("search.html",users=users)
 
 @app.route("/ideas")
 def ideas():
@@ -121,7 +146,11 @@ def idea(post_id):
         else:
             liked = True
         return render_template("idea.html", username=session.get("user")[1].capitalize(), post=post, title=session.get("user")[2].capitalize(), bio=session.get("user")[3], img=session.get("user")[4], likes_number=likes_number,liked=liked)
-    return render_template("login.html")
+    else:
+        post = posts_db.get_by_id(post_id)
+        likes_number = likes.count_likes(post_id)
+        liked = False
+        return render_template("idea.html", post=post, likes_number=likes_number, liked=liked)
 
 # comminting feature
 @app.route("/add_comment/<int:post_id>",methods=["POST"])
@@ -141,7 +170,7 @@ def add_comment(post_id):
         comments.add(comment,post_id,id_)
         posts_db.update_comments(comments_number+1,post_id)
         return jsonify({"comment": comment, "name": name, "img": img, "comments_number": comments_number + 1})
-    return render_template("login.html")
+    return jsonify({})
 
 # test api
 @app.route("/test_api/<int:post_id>", methods=["POST"])

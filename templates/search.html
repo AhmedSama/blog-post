@@ -1,0 +1,31 @@
+{%extends 'base.html'%}
+{%block title%}search for user{%endblock%}
+{%block content%}
+
+{%if users%}
+
+<div class="my-2 ">
+    {%for user in users%}
+    <div class="row">
+        <div class="col-lg-8 col-md-10 col-sm-12">
+            <div class="card">
+                <a href="{{url_for('user',user_id=user[0])}}">
+                <div class="post-header">
+                    <div class="profile-post-img">
+                        <img class="circle-img" src="{{url_for('static',filename=user[6])}}" alt="profile picture">
+                    </div>
+                    <div class="profile-post-data ">
+                        <h1 style="font-size: 15px;" class="font-1 m-0">{{user[1]}}</h1>
+                    </div>
+                </div>
+                </a>
+            </div>
+        </div>
+    </div>
+    {%endfor%}
+</div>
+{%else%}
+<h2>there is no such a user!</h2>
+{%endif%}
+
+{%endblock%}

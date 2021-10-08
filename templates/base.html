@@ -67,7 +67,10 @@
                     {%endif%}
                 </li>
             </ul>
-
+            <form class="d-flex" action="{{url_for('search')}}">
+                <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" name="search">
+                <button class="btn btn-outline-success" type="submit">Search</button>
+            </form>
             <form class="d-flex">
                 {%if session['user']%}
                 <a class="btn btn-danger font-1" aria-current="page" href="{{url_for('logout')}}">Logout</a>

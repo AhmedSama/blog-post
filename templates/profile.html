@@ -1,9 +1,9 @@
 {%extends 'base.html'%}
-{%block title%}my profile{%endblock%}
+{%block title%}{{username}} - profile{%endblock%}
 {%block content%}
     <!-- new test -->
         <div class="profile">
-            <div class="cover"></div>
+            <div id="cover" class="cover"></div>
             <div class="data border">
                 <div class="profile-img">
                     <img class="circle-img" src="{{url_for('static',filename=img)}}" alt="blue profile picture">
@@ -58,8 +58,7 @@
     {%endif%}
 
 <script>
-    let home2 = document.getElementById("home2");
-    home2.classList.add("active");
+    document.getElementById("cover").style.background = `{{bg_color}}`;
 </script>
 
 

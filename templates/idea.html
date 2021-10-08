@@ -150,6 +150,11 @@
         })
         .then(res => res.json())
         .then(final_res => {
+            console.log(final_res)
+            if(Object.keys(final_res).length === 0 && final_res.constructor === Object){
+                window.location.replace("{{url_for('login')}}");
+                return;
+            }
             let comment_data = document.getElementById("comment-data");
             let div1 = document.createElement("div");
             div1.classList.add("comment","line","pt-2");
