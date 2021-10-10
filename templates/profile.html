@@ -46,7 +46,11 @@
                                 
                                 <div class="mx-2"></div>
                                 <div class="likes-number m-0 p-0 ">{{post[5]}}</div>
+                                {%if post[0] in liked_posts%}
                                 <i style="color: #ff0000;" class="bi bi-heart-fill cursor-p fs-4"></i>
+                                {%else%}
+                                <i class="bi bi-heart-fill cursor-p fs-4"></i>
+                                {%endif%}
                             </div>
                         </div>
                     </div>

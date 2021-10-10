@@ -11,7 +11,13 @@
         <div class="profile-data ">
             <h1 class="font-1">{{user[1]}}</h1>
             <h3 style="background:rgb(255, 0, 170);" class="font-1 badge fs-6">{{user[4]}}</h3>
+            {%if isFollowing%}
+            <button id="follow" class="badge btn btn-primary">unfollow</button>
+            {%else%}
+            <button id="follow" class="badge btn btn-primary">follow</button>
+            {%endif%}
             <p class="font-1">{{user[5]}}</p>
+            
         </div>
 
     </div>
@@ -59,8 +65,26 @@
 
 <script>
     document.getElementById("cover").style.background = `{{user[7]}}`;
-    let home2 = document.getElementById("home2");
-    home2.classList.add("active");
+      
+    document.getElementById("follow").addEventListener("click", () => {
+    fetch("{{url_for('follow',following_id = user[0])}}")
+        .then(res => res.json())
+        .then(data => {
+            if (Object.keys(data).length === 0 && data.constructor === Object) {
+                window.location.replace("{{url_for('login')}}");
+                return;
+            }
+            if(data.done){
+                
+                document.getElementById("follow").innerText = "unfollow";
+            }
+            else{
+                document.getElementById("follow").innerText = "follow";
+            }
+        })
+    })
+
+
 </script>
 
 

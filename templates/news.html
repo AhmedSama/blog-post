@@ -1,0 +1,81 @@
+{%extends 'base.html'%}
+{%block title%}News Ideas{%endblock%}
+{%block content%}
+
+{%if posts%}
+{%for post in posts%}
+<div class="mt-4"></div>
+<div class="row">
+    <div class="col-lg-8 col-md-10 col-sm-12">
+        <div class="card">
+            <div class="post-header">
+                <div class="profile-post-img">
+                    <img class="circle-img" src="{{url_for('static',filename=post[2])}}" alt="blue profile picture">
+                </div>
+                <div class="profile-post-data ">
+                    <h1 style="font-size: 15px;" class="font-1 m-0">{{post[1]}}</h1>
+                </div>
+
+            </div>
+            <div class="card-body">
+                <a href="{{url_for('idea',post_id=post[3])}}">
+                    <h5 class="card-title font-1">{{post[4]}}</h5>
+                </a>
+                <p class="card-text font-1">{{post[5]}}</p>
+            </div>
+            <img src="{{url_for('static',filename=post[6])}}" class="card-img-bottom" alt="post image">
+            <div class="like-comment mt-3 ">
+                <div class="comments-number m-0 p-0">{{post[8]}}</div>
+                <a href="{{url_for('idea',post_id=post[3])}}#comment-data">
+                    <i class="bi bi-chat-right-dots cursor-p fs-4"></i>
+                </a>
+
+                <div class="mx-2"></div>
+                <div class="likes-number m-0 p-0 ">{{post[7]}}</div>
+                {%if post[3] in liked_posts%}
+                <i style="color: #ff0055;" class="bi bi-heart-fill cursor-p fs-4"></i>
+                {%else%}
+                <i class="bi bi-heart-fill cursor-p fs-4"></i>
+                {%endif%}
+            </div>
+        </div>
+    </div>
+</div>
+{%endfor%}
+{%else%}
+<h2 class="badge font-1 alert alert-warning">there is no News yet!</h2>
+<h2 class="badge font-1 alert alert-success">follow some people to get their ideas in this news section </h2>
+{%endif%}
+
+
+<script>
+    let all_ideas = document.getElementById("news");
+    all_ideas.classList.add("active");
+    let l = document.getElementsByClassName("like-btn");
+    for (let i = 0; i < l.length; i++) {
+        l[i].addEventListener("click", e => {
+            let likes_number = document.getElementById("likes-number-" + l[i].id);
+            fetch("http://127.0.0.1:5000/add_like/" + l[i].id, {
+                method: "POST",
+            })
+                .then(res => res.json())
+                .then(data => {
+                    if (data.done) {
+                        document.getElementById("likes-number-" + l[i].id).style = "background-color: rgba(255, 0, 115, 0.734);"
+                        document.getElementById("likes-number-" + l[i].id).innerText = data.like;
+                    }
+                    else {
+                        document.getElementById("likes-number-" + l[i].id).style = "background-color: rgba(0, 0, 0, 0.734);"
+                        document.getElementById("likes-number-" + l[i].id).innerText = data.like;
+                    }
+
+                })
+        })
+    }
+    function do_like(post_id) {
+
+    }
+
+</script>
+
+{%endblock%}

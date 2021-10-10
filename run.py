@@ -1,5 +1,5 @@
 from flask import Flask,render_template,request,redirect,url_for,session,jsonify
-import models,posts_db,comments,likes
+import models,posts_db,comments,likes,flowers
 from common_color import most_common_color
 from os import path,mkdir
 
@@ -75,19 +75,40 @@ def profile():
     if session.get("user"):
         id_ = session.get("user")[0]
         posts = posts_db.get_by(id_)
-        return render_template("profile.html", username=session.get("user")[1].capitalize(), posts=posts, title=session.get("user")[2].capitalize(), bio=session.get("user")[3], img=session.get("user")[4], bg_color=session.get("user")[5])
+        liked_posts = posts_db.get_posts_i_liked(id_)
+        return render_template("profile.html", username=session.get("user")[1].capitalize(), posts=posts, title=session.get("user")[2].capitalize(), bio=session.get("user")[3], img=session.get("user")[4], bg_color=session.get("user")[5], liked_posts=liked_posts)
     return redirect(url_for("login"))
 
 
 @app.route("/user/<int:user_id>")
 def user(user_id):
+    # if session exist and user_id == my id redirecct to my profile
+    if session.get("user"):
+        id_ = session.get("user")[0]
+        if id_ == user_id:
+            return redirect(url_for("profile"))
     users_data = models.get_by(user_id)
     if not users_data:
         return redirect(url_for("profile"))
     posts = posts_db.get_by(user_id)
-    return render_template("user.html",user = users_data,posts=posts)
+    isFollowing = False
+    if session.get("user"):
+        id_ = session.get("user")[0]
+        if flowers.get_one(id_, user_id):
+            isFollowing = True
+        else:
+            isFollowing = False
+    return render_template("user.html", user=users_data, posts=posts, isFollowing=isFollowing)
 
 
+@app.route("/news")
+def news():
+    if session.get("user"):
+        id_ = session.get("user")[0]
+        posts = flowers.get_followers_posts(id_)
+        liked_posts = posts_db.get_posts_i_liked(id_)
+        return render_template("news.html", posts=posts, liked_posts=liked_posts)
+    return redirect(url_for("login"))
 @app.route("/search")
 def search():
     username = request.args.get("search")
@@ -173,15 +194,22 @@ def add_comment(post_id):
     return jsonify({})
 
 # test api
-@app.route("/test_api/<int:post_id>", methods=["POST"])
-def test_api(post_id):
+@app.route("/follow/<int:following_id>")
+def follow(following_id):
     if session.get("user"):
-        data = request.get_json()
-        print(data.get("the_comment"))
-        the_comment = data.get("the_comment")
-        send_data = {"comment": the_comment}
-        return jsonify(send_data)
-    return render_template("login.html")
+        id_ = session.get("user")[0] #follower id
+        # so i can't follow myself
+        if id_ == following_id:
+            return jsonify({"done": False})
+        if not flowers.get_one(id_, following_id):
+            flowers.add(id_, following_id)
+            print("adding")
+            return jsonify({"done":True})
+        else:
+            print("deleting")
+            flowers.delete(id_, following_id)
+            return jsonify({"done": False})
+    return jsonify({})
 
 
 # liking feature
@@ -233,6 +261,7 @@ if __name__ == "__main__":
     posts_db.make_db()
     comments.make_db()
     likes.make_db()
+    flowers.make_db()
     app.run(debug=True)
 
 
