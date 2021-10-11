@@ -66,7 +66,7 @@ def login():
             return redirect(url_for("profile"))
         else:
             session["user"] = user
-            return redirect(url_for("profile"))
+            return redirect(request.referrer)
     return render_template("login.html")
 
 
@@ -91,13 +91,15 @@ def user(user_id):
     if not users_data:
         return redirect(url_for("profile"))
     posts = posts_db.get_by(user_id)
-    isFollowing = False
+    isFollowing = 0
     if session.get("user"):
         id_ = session.get("user")[0]
         if flowers.get_one(id_, user_id):
-            isFollowing = True
+            isFollowing = 1
         else:
-            isFollowing = False
+            isFollowing = 0
+    else:
+        isFollowing = 2
     return render_template("user.html", user=users_data, posts=posts, isFollowing=isFollowing)
 
 

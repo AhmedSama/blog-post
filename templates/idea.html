@@ -44,12 +44,20 @@
                 
                 
                 {%else%}
+                    {%if session["user"]%}
                     <i id="like_btn" class="bi bi-heart-fill cursor-p fs-4"></i>
+                    {%else%}
+                    <i data-bs-toggle="modal" data-bs-target="#login-modal" class="bi bi-heart-fill cursor-p fs-4"></i>
+                    {%endif%}
                 {%endif%}
             </div>
             <div id="comments" class="comments">
                 <div class="comment-form">
+                    {%if session["user"]%}
                     <i id="add_comment" class="bi bi-telegram btn p-0 mx-1 border-0 text-primary fs-3 font-2"></i>
+                    {%else%}
+                    <i data-bs-toggle="modal" data-bs-target="#login-modal" class="bi bi-telegram btn p-0 mx-1 border-0 text-primary fs-3 font-2"></i>
+                    {%endif%}
                     <textarea id="comment" class="form-control font-1 " placeholder="write comment..."></textarea>
                 </div>
                 <div id="comment-data" class="comment-data">
@@ -65,7 +73,30 @@
         </div>
     </div>
 </div>
-
+<!--login Modal -->
+<div class="modal fade" id="login-modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Login!</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form class=" border text-center p-1" method="POST" action="{{url_for('login')}}">
+                    <div class="mb-3">
+                        <label for="username" class="form-label">Username</label>
+                        <input type="text" class="form-control" id="username" name="username">
+                    </div>
+                    <div class="mb-3">
+                        <label for="exampleInputPassword1" class="form-label">Password</label>
+                        <input type="password" class="form-control" id="exampleInputPassword1" name="pwd">
+                    </div>
+                    <button type="submit" class="btn btn-primary">Login</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
 
 <script>
     let offset = 0;

@@ -1,7 +1,8 @@
 {%extends 'base.html'%}
 {%block title%}{{user[1]}} - profile{%endblock%}
 {%block content%}
-<!-- new test -->
+
+<!-- user profile -->
 <div class="profile">
     <div id="cover" class="cover"></div>
     <div class="data border">
@@ -11,10 +12,12 @@
         <div class="profile-data ">
             <h1 class="font-1">{{user[1]}}</h1>
             <h3 style="background:rgb(255, 0, 170);" class="font-1 badge fs-6">{{user[4]}}</h3>
-            {%if isFollowing%}
+            {%if isFollowing == 1%}
             <button id="follow" class="badge btn btn-primary">unfollow</button>
-            {%else%}
+            {%elif isFollowing == 0%}
             <button id="follow" class="badge btn btn-primary">follow</button>
+            {%elif isFollowing == 2%}
+            <button class="badge btn btn-primary" data-bs-toggle="modal" data-bs-target="#login-modal">follow</button>
             {%endif%}
             <p class="font-1">{{user[5]}}</p>
             
@@ -62,6 +65,31 @@
 {%else%}
 <h2 class="font-1">there is no Ideas yet!</h2>
 {%endif%}
+
+<!--login Modal -->
+<div class="modal fade" id="login-modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Login!</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form class=" border text-center p-1" method="POST" action="{{url_for('login')}}">
+                    <div class="mb-3">
+                        <label for="username" class="form-label">Username</label>
+                        <input type="text" class="form-control" id="username" name="username">
+                    </div>
+                    <div class="mb-3">
+                        <label for="exampleInputPassword1" class="form-label">Password</label>
+                        <input type="password" class="form-control" id="exampleInputPassword1" name="pwd">
+                    </div>
+                    <button type="submit" class="btn btn-primary">Login</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
 
 <script>
     document.getElementById("cover").style.background = `{{user[7]}}`;
